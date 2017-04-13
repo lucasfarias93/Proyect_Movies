@@ -1,11 +1,8 @@
 package webview.project.movies;
 
-import android.graphics.Movie;
+
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.LayoutInflater;
-import android.view.View;
+
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,15 +14,16 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import webview.project.movies.Clients.MoviesDataAsynkConnection;
 import webview.project.movies.Entities.MovieData;
+import webview.project.movies.Utils.AppConstants;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, MoviesDataAsynkConnection.Callback {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MoviesDataAsynkConnection.Callback {
 
-    List<MovieData> movieDataList;
+    private String page_num = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,18 +80,26 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            getMoviePopularDataListCallback(movieDataList);
-        } else if (id == R.id.nav_gallery) {
+        switch(id){
+            case R.id.nav_camera:
+                final MoviesDataAsynkConnection moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, "Popular");
+                moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
+                break;
 
-        } else if (id == R.id.nav_slideshow) {
+            case R.id.nav_gallery:
+                break;
 
-        } else if (id == R.id.nav_manage) {
+            case R.id.nav_slideshow:
+                break;
 
-        } else if (id == R.id.nav_share) {
+            case R.id.nav_manage:
+                break;
 
-        } else if (id == R.id.nav_send) {
+            case R.id.nav_share:
+                break;
 
+            case R.id.nav_send:
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -112,5 +118,4 @@ public class MainActivity extends AppCompatActivity
     public void getMoviesTopRatedDataListCallback(Object movies) {
 
     }
-    // API KEY --> 589e10387e0ca4ece633f5836fb0383f
 }
