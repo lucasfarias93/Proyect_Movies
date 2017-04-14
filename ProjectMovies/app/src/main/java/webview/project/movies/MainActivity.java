@@ -8,6 +8,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
+import webview.project.movies.Adapters.GridLayoutAdapter;
 import webview.project.movies.Clients.MoviesDataAsynkConnection;
 import webview.project.movies.Entities.MovieData;
 import webview.project.movies.Utils.AppConstants;
@@ -24,6 +27,8 @@ import webview.project.movies.Utils.AppConstants;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MoviesDataAsynkConnection.Callback {
 
     private String page_num = "1";
+    private GridLayoutManager gridLayoutManager;
+    private List<MovieData> myMovieData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        gridLayoutManager = new GridLayoutManager(MainActivity.this, 3);
+
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerView_id);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+        GridLayoutAdapter gridLayoutAdapter = new GridLayoutAdapter(MainActivity.this, myMovieData);
+        recyclerView.setAdapter(gridLayoutAdapter);
     }
 
     @Override
