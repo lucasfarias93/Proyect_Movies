@@ -23,6 +23,14 @@ public interface RestMoviesConnectionProvider {
             @Query("page") int page_num
     );
 
+    //NOW PLAYING MOVIES
+    @GET("movie/now_playing")
+    Call<MoviesResult> getMovieNowPlayingList(
+            @Query("api_key") String api_key,
+            @Query("language") String language,
+            @Query("page") int page_num
+    );
+
     //TOP RATED MOVIES
     @GET("movie/top_rated")
     Call<MoviesResult> getMovieTopRatedList(
@@ -34,5 +42,9 @@ public interface RestMoviesConnectionProvider {
     //VIDEOS MOVIES
     @GET("movie/{movie_id}/videos")
     Call<MoviesResult> getMovieVideo();
+
+    //REVIEW MOVIES
+    @GET("movie/{movie_id}/reviews")
+    Call<MoviesResult> getMoviesReview();
 
 }

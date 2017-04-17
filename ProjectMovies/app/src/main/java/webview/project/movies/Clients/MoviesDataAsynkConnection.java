@@ -23,16 +23,14 @@ public class MoviesDataAsynkConnection extends AsyncTask<String,Void,List<MovieD
     List<MovieData> movieDataList;
 
     public interface Callback {
-        void getMoviePopularDataListCallback(Object movies);
-
-        void getMoviesTopRatedDataListCallback(Object movies);
+        void getMovieDataListCallback(Object movies);
     }
 
     private Callback callback;
     private Context context;
-    private String filter_type;
+    private Integer filter_type;
 
-    public MoviesDataAsynkConnection(Callback callback, Context context, String filter_Type) {
+    public MoviesDataAsynkConnection(Callback callback, Context context, Integer filter_Type) {
         this.callback = callback;
         this.context = context;
         this.filter_type = filter_Type;
@@ -49,35 +47,45 @@ public class MoviesDataAsynkConnection extends AsyncTask<String,Void,List<MovieD
 
         RetrofitHelper retrofitHelper = new RetrofitHelper();
         RestMoviesConnectionProvider restMoviesConnectionProvider = retrofitHelper.createProvider(RestMoviesConnectionProvider.class);
-        if (filter_type == "Popular") {
-            try {
+        switch(filter_type){
+            case 0:
+                try {
+                    Call<MoviesResult> request = restMoviesConnectionProvider.getMovieNowPlayingList(api_key, language, page_number);
+                    Response<MoviesResult> response = request.execute();
+                    getMoviesResult(response);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case 1:
+                try {
                 Call<MoviesResult> request = restMoviesConnectionProvider.getMoviePopularList(api_key, language, page_number);
                 Response<MoviesResult> response = request.execute();
                 getMoviesResult(response);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if(filter_type == "TopRated") {
-            try {
-                Call<MoviesResult> request = restMoviesConnectionProvider.getMovieTopRatedList(api_key, language, page_number);
-                Response<MoviesResult> response = request.execute();
-                response.body();
-                //Implementar lo mismo de arriba
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+                break;
+
+            case 2:
+                try {
+                    Call<MoviesResult> request = restMoviesConnectionProvider.getMovieTopRatedList(api_key, language, page_number);
+                    Response<MoviesResult> response = request.execute();
+                    getMoviesResult(response);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                break;
         }
+
         return movieDataList;
     }
 
     @Override
     protected void onPostExecute(List<MovieData> movieDataList) {
         super.onPostExecute(movieDataList);
-        if(filter_type == "Popular"){
-            callback.getMoviePopularDataListCallback(movieDataList);
-        } else if(filter_type == "TopRated"){
-            callback.getMoviesTopRatedDataListCallback(movieDataList);
-        }
+        callback.getMovieDataListCallback(movieDataList);
     }
 
     public List<MovieData> getMoviesResult(Response<MoviesResult> response){

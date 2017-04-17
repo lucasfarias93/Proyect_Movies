@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -17,22 +19,15 @@ import java.util.List;
 
 import webview.project.movies.Entities.MovieData;
 import webview.project.movies.R;
+import webview.project.movies.Utils.GridLayoutViewHolder;
 
 /**
  * Created by LUCAS on 13/04/2017.
  */
-public class GridLayoutAdapter extends RecyclerView.Adapter<GridLayoutAdapter.ViewHolder> {
+public class GridLayoutAdapter extends RecyclerView.Adapter<GridLayoutViewHolder> {
     public List<MovieData> myMovieDataList;
+    public static final String BASE_POSTER_URL = "https://image.tmdb.org/t/p/w150";
     public Context context;
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView moviePoster;
-
-        public ViewHolder(View v) {
-            super(v);
-            moviePoster = (ImageView) v.findViewById(R.id.movie_image_id);
-        }
-    }
 
     public GridLayoutAdapter(Context context, List<MovieData> movieDataList) {
         myMovieDataList = movieDataList;
@@ -40,27 +35,31 @@ public class GridLayoutAdapter extends RecyclerView.Adapter<GridLayoutAdapter.Vi
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View recyclerLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_grid, null);
-        ViewHolder viewHolder = new ViewHolder(recyclerLayoutView);
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public GridLayoutViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View recyclerLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_grid, parent, false);
+        GridLayoutViewHolder viewHolder = new GridLayoutViewHolder(recyclerLayoutView);
         return viewHolder;
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return myMovieDataList.size();
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        for (MovieData movie : myMovieDataList) {
-            try {
-                Bitmap imagePath = BitmapFactory.decodeStream((InputStream) new URL(movie.getPoster_path()).getContent());
-                holder.moviePoster.setImageBitmap(imagePath);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    public void onBindViewHolder(GridLayoutViewHolder holder, int position) {
+            MovieData movie = myMovieDataList.get(position);
+            Picasso.with(context)
+                    .load(BASE_POSTER_URL + movie.getPoster_path())
+                    .into(holder.moviePoster);
+
+        holder.setOnClickListeners();
+
     }
 }
 
