@@ -4,5 +4,9 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_logout">Log Out</string>
+    <string name="topRated_movies">TOP RATED MOVIES</string>
+    <string name="popular_movies">POPULAR MOVIES</string>
+    <string name="favorite_movies">FAVORITE MOVIES</string>
+    <string name="settings">SETTINGS</string>
 </resources>

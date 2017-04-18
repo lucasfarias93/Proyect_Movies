@@ -19,6 +19,7 @@ import java.util.List;
 
 import webview.project.movies.Entities.MovieData;
 import webview.project.movies.R;
+import webview.project.movies.Utils.AppConstants;
 import webview.project.movies.Utils.GridLayoutViewHolder;
 
 /**
@@ -26,7 +27,6 @@ import webview.project.movies.Utils.GridLayoutViewHolder;
  */
 public class GridLayoutAdapter extends RecyclerView.Adapter<GridLayoutViewHolder> {
     public List<MovieData> myMovieDataList;
-    public static final String BASE_POSTER_URL = "https://image.tmdb.org/t/p/w150";
     public Context context;
 
     public GridLayoutAdapter(Context context, List<MovieData> movieDataList) {
@@ -42,7 +42,7 @@ public class GridLayoutAdapter extends RecyclerView.Adapter<GridLayoutViewHolder
     @Override
     public GridLayoutViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View recyclerLayoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_grid, parent, false);
-        GridLayoutViewHolder viewHolder = new GridLayoutViewHolder(recyclerLayoutView);
+        GridLayoutViewHolder viewHolder = new GridLayoutViewHolder(recyclerLayoutView, context);
         return viewHolder;
     }
 
@@ -55,10 +55,12 @@ public class GridLayoutAdapter extends RecyclerView.Adapter<GridLayoutViewHolder
     public void onBindViewHolder(GridLayoutViewHolder holder, int position) {
             MovieData movie = myMovieDataList.get(position);
             Picasso.with(context)
-                    .load(BASE_POSTER_URL + movie.getPoster_path())
+                    .load(AppConstants.BASE_POSTER_URL + movie.getPoster_path())
                     .into(holder.moviePoster);
 
-        holder.setOnClickListeners();
+
+
+        holder.setOnClickListeners(movie);
 
     }
 }

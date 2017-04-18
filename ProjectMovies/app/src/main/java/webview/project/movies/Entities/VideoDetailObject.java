@@ -59,11 +59,11 @@ public class VideoDetailObject {
         this.site = site;
     }
 
-    public int getSize() {
+    public Integer getSize() {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(Integer size) {
         this.size = size;
     }
 
@@ -76,6 +76,6 @@ public class VideoDetailObject {
     }
 
     private String site;
-    private int size;
+    private Integer size;
     private String type;
 }

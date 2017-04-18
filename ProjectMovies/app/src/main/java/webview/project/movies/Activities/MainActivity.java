@@ -1,6 +1,7 @@
-package webview.project.movies;
+package webview.project.movies.Activities;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 
 import android.support.design.widget.NavigationView;
@@ -13,15 +14,19 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import java.util.List;
 
 import webview.project.movies.Adapters.GridLayoutAdapter;
 import webview.project.movies.Clients.MoviesDataAsynkConnection;
 import webview.project.movies.Entities.MovieData;
+import webview.project.movies.R;
 import webview.project.movies.Utils.AppConstants;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MoviesDataAsynkConnection.Callback {
 
+    private ProgressDialog progressDialog = null;
     private RecyclerView recyclerView;
     private GridLayoutAdapter gridLayoutAdapter;
     private String page_num = "1";
@@ -40,7 +45,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         initView();
 
-        MoviesDataAsynkConnection moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, 0);
+        MoviesDataAsynkConnection moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.NOW_PLAYING_MOVIES);
+        this.progressDialog = ProgressDialog.show(this,AppConstants.PROCESS_REQUEST, AppConstants.LOADING);
         moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
     }
 
@@ -69,8 +75,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.action_logout) {
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
@@ -85,12 +91,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch(id){
             case R.id.popular_movies:
-                moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, 1);
+                moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.POPULAR_MOVIES);
+                this.progressDialog = ProgressDialog.show(this,AppConstants.PROCESS_REQUEST, AppConstants.LOADING);
                 moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
                 break;
 
             case R.id.top_rated_movies:
-                moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, 2);
+                moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.TOP_RATED_MOVIES);
+                this.progressDialog = ProgressDialog.show(this,AppConstants.PROCESS_REQUEST, AppConstants.LOADING);
                 moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
                 break;
 
@@ -98,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.settings:
+                Toast.makeText(MainActivity.this, AppConstants.CUSTOM_SETTINGS, Toast.LENGTH_LONG).show();
                 break;
         }
 
@@ -111,6 +120,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         myMovieData = (List<MovieData>) movies;
         gridLayoutAdapter = new GridLayoutAdapter(MainActivity.this, myMovieData);
         recyclerView.setAdapter(gridLayoutAdapter);
+        if(this.progressDialog != null){
+            this.progressDialog.dismiss();
+        }
     }
 
     public void initView(){

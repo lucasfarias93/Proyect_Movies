@@ -2,10 +2,12 @@ package webview.project.movies.RestMoviesProvider;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 import webview.project.movies.Entities.MovieData;
 import webview.project.movies.Entities.MovieVideo;
 import webview.project.movies.Entities.MoviesResult;
+import webview.project.movies.Entities.VideoDetailObject;
 import webview.project.movies.Utils.AppConstants;
 
 import java.util.List;
@@ -41,7 +43,10 @@ public interface RestMoviesConnectionProvider {
 
     //VIDEOS MOVIES
     @GET("movie/{movie_id}/videos")
-    Call<MoviesResult> getMovieVideo();
+    Call<MovieVideo> getMovieVideo(
+            @Path("movie_id") Integer id,
+            @Query("api_key") String api_key)
+    ;
 
     //REVIEW MOVIES
     @GET("movie/{movie_id}/reviews")

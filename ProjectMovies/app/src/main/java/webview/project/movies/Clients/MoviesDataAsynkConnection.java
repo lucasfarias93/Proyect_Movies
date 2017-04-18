@@ -1,5 +1,6 @@
 package webview.project.movies.Clients;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -21,14 +22,13 @@ import webview.project.movies.RetrofitHelper.RetrofitHelper;
 public class MoviesDataAsynkConnection extends AsyncTask<String,Void,List<MovieData>>{
 
     List<MovieData> movieDataList;
+    private Callback callback;
+    private Context context;
+    private Integer filter_type;
 
     public interface Callback {
         void getMovieDataListCallback(Object movies);
     }
-
-    private Callback callback;
-    private Context context;
-    private Integer filter_type;
 
     public MoviesDataAsynkConnection(Callback callback, Context context, Integer filter_Type) {
         this.callback = callback;

@@ -10,7 +10,7 @@ import java.util.List;
 public class MovieData implements Serializable {
 
     private String poster_path;
-    private int id;
+    private Integer id;
     private String overview;
     private String release_date;
     private String original_title;
