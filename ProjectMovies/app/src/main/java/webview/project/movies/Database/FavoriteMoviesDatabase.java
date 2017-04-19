@@ -21,13 +21,13 @@ public class FavoriteMoviesDatabase extends SQLiteOpenHelper {
     private static final String ID = "id";
     private static final String COLUMN_OVERVIEW = "overview";
     private static final String COLUMN_POSTER = "poster";
-    private static final String COLUMN_RAITING = "raiting";
+    private static final String COLUMN_RATING = "rating";
     private static final String COLUMN_DATE = "date";
 
     SQLiteDatabase db;
 
     private static final String TABLE_CREATE_DETAILS = "create table details (id integer primary key not null , " +
-            "title text not null , overview text not null , poster text not null , raiting text not null , date text not null);";
+            "title text not null , overview text not null , poster text not null , rating text not null , date text not null);";
 
     public FavoriteMoviesDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -50,7 +50,7 @@ public class FavoriteMoviesDatabase extends SQLiteOpenHelper {
         values.put(COLUMN_TITLE, mData.getTitle());
         values.put(COLUMN_OVERVIEW, mData.getOverview());
         values.put(COLUMN_POSTER, mData.getBackdrop_path());
-        values.put(COLUMN_RAITING, mData.getPopularity());
+        values.put(COLUMN_RATING, mData.getPopularity());
         values.put(COLUMN_DATE, mData.getRelease_date());
 
         db.insert(TABLE_NAME_DETAILS, null, values);
@@ -72,7 +72,7 @@ public class FavoriteMoviesDatabase extends SQLiteOpenHelper {
                     values.put(COLUMN_TITLE, mData.getTitle());
                     values.put(COLUMN_OVERVIEW, mData.getOverview());
                     values.put(COLUMN_POSTER, mData.getBackdrop_path());
-                    values.put(COLUMN_RAITING, mData.getPopularity());
+                    values.put(COLUMN_RATING, mData.getPopularity());
                     values.put(COLUMN_DATE, mData.getRelease_date());
 
                     insertMovieData(mData);
