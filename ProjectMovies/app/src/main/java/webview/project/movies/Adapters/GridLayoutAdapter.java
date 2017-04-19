@@ -55,7 +55,7 @@ public class GridLayoutAdapter extends RecyclerView.Adapter<GridLayoutViewHolder
     public void onBindViewHolder(GridLayoutViewHolder holder, int position) {
             MovieData movie = myMovieDataList.get(position);
             Picasso.with(context)
-                    .load(AppConstants.BASE_POSTER_URL + movie.getPoster_path())
+                    .load(AppConstants.BASE_POSTER_GRID_URL + movie.getPoster_path())
                     .into(holder.moviePoster);
 
 

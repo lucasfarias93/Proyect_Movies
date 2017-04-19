@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/text_header"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="Internet connection problems"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/text_incorrect"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_below="@+id/textLogin"
+        android:text="Please check your internet connection. Favorite movie list will be loaded.."
+        android:gravity="center_vertical|center_horizontal"
+        android:textSize="12dp" />
+
+    <Button
+        android:id="@+id/button_ok_dialog"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/textLogin"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center" />
+</LinearLayout>

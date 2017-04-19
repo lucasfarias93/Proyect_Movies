@@ -6,11 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
-import webview.project.movies.Activities.MainActivity;
 import webview.project.movies.Activities.MovieDetailActivity;
-import webview.project.movies.Clients.VideoMovieAsynkConnection;
 import webview.project.movies.Entities.MovieData;
 import webview.project.movies.R;
 
@@ -26,7 +23,7 @@ public class GridLayoutViewHolder extends RecyclerView.ViewHolder implements Vie
     private String overview;
     private String release_date;
     private Double vote_average;
-    private String backdrop_path;
+    private String poster_path;
     private Integer id;
 
     public GridLayoutViewHolder(View v, Context context) {
@@ -48,7 +45,7 @@ public class GridLayoutViewHolder extends RecyclerView.ViewHolder implements Vie
         i.putExtra("overview", overview);
         i.putExtra("date", release_date);
         i.putExtra("vote", vote_average);
-        i.putExtra("backdrop", backdrop_path);
+        i.putExtra("poster", poster_path);
         i.putExtra("id", id);
         context.startActivity(i);
     }
@@ -58,7 +55,7 @@ public class GridLayoutViewHolder extends RecyclerView.ViewHolder implements Vie
         overview = movie.getOverview();
         release_date = movie.getRelease_date();
         vote_average = movie.getVote_average();
-        backdrop_path = movie.getBackdrop_path();
+        poster_path = movie.getPoster_path();
         id = movie.getId();
     }
 }

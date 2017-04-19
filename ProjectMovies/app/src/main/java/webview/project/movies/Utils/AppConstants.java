@@ -15,7 +15,8 @@ public class AppConstants {
     public static final String PROCESS_REQUEST = "Processing request";
     public static final String LOADING = "Loading ...";
     public static final String CUSTOM_SETTINGS = "Custom your Settings Menu Option";
-    public static final String BASE_POSTER_URL = "https://image.tmdb.org/t/p/w150";
+    public static final String BASE_POSTER_GRID_URL = "https://image.tmdb.org/t/p/w780";
+    public static final String BASE_BACKDROP_URL = "https://image.tmdb.org/t/p/w780";
     public static final String BASE_VIDEO_URL = "https://www.youtube.com/watch?v=";
     public static final String YOUTUBE_KEY = "AIzaSyDE18opuRo8CvyJqQf0AfiMBT_xwvTxaSE";
 }

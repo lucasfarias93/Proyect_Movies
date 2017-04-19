@@ -2,12 +2,15 @@ package webview.project.movies.Activities;
 
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,6 +26,7 @@ import webview.project.movies.Clients.MoviesDataAsynkConnection;
 import webview.project.movies.Entities.MovieData;
 import webview.project.movies.R;
 import webview.project.movies.Utils.AppConstants;
+import webview.project.movies.Utils.SimpleDialog;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MoviesDataAsynkConnection.Callback {
 
@@ -37,17 +41,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initView();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        MoviesDataAsynkConnection moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.NOW_PLAYING_MOVIES);
-        this.progressDialog = ProgressDialog.show(this,AppConstants.PROCESS_REQUEST, AppConstants.LOADING);
-        moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
+        initView();
+        if(isNetworkUp()){
+            MoviesDataAsynkConnection moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.NOW_PLAYING_MOVIES);
+            this.progressDialog = ProgressDialog.show(this,AppConstants.PROCESS_REQUEST, AppConstants.LOADING);
+            moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
+        } else {
+            crearDialogoConexion("Internet problems", "Please check your internet connection. Favorite movie list will be loaded..");
+            loadFavoriteMovies();
+        }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
     }
 
     @Override
@@ -103,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.favorite_movies:
+                loadFavoriteMovies();
                 break;
 
             case R.id.settings:
@@ -143,5 +160,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView_id);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(true);
+    }
+
+    public Boolean isNetworkUp(){
+        try {
+            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.es");
+
+            int val = p.waitFor();
+            boolean reachable = (val == 0);
+            return reachable;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public void loadFavoriteMovies(){}
+
+    private AlertDialog crearDialogoConexion(String title, String message) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setTitle(title);
+        alertDialogBuilder.setMessage(message);
+
+        DialogInterface.OnClickListener listenerOk = new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        };
+        alertDialogBuilder.setPositiveButton("OK", listenerOk);
+        return alertDialogBuilder.create();
     }
 }
