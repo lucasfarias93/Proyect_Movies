@@ -21,4 +21,13 @@
         <item name="colorAccent">@color/colorGold</item>
     </style>
 
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!--buttons color-->
+        <item name="colorAccent">@color/colorGold</item>
+        <!--title and message color-->
+        <item name="android:textColor">@color/colorWhite</item>
+        <!--dialog background-->
+        <item name="android:windowBackground">@drawable/backgroud_dialog</item>
+    </style>
+
 </resources>

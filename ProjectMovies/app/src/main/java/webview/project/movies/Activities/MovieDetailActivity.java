@@ -60,7 +60,11 @@ public class MovieDetailActivity extends YouTubeBaseActivity implements VideoMov
 
 
         final VideoMovieAsynkConnection videoMovieAsynkConnection = new VideoMovieAsynkConnection(this, this, movie_id);
-        this.progressDialog = ProgressDialog.show(this, AppConstants.PROCESS_REQUEST, AppConstants.LOADING);
+        this.progressDialog = new ProgressDialog(this,R.style.AlertDialogCustom);
+        progressDialog.setTitle(AppConstants.PROCESS_REQUEST);
+        progressDialog.setMessage(AppConstants.LOADING);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
         videoMovieAsynkConnection.execute(AppConstants.API_KEY);
 
         playerFragment.initialize(AppConstants.YOUTUBE_KEY, new YouTubePlayer.OnInitializedListener()

@@ -38,7 +38,11 @@ public class ReviewsActivity extends AppCompatActivity implements ReviewsMovieAs
         initView();
 
         ReviewsMovieAsynkConnection reviewsMovieAsynkConnection = new ReviewsMovieAsynkConnection(this, this, movie_id);
-        this.progressDialog = ProgressDialog.show(this,AppConstants.PROCESS_REQUEST, AppConstants.LOADING);
+        this.progressDialog = new ProgressDialog(this,R.style.AlertDialogCustom);
+        progressDialog.setTitle(AppConstants.PROCESS_REQUEST);
+        progressDialog.setMessage(AppConstants.LOADING);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
         reviewsMovieAsynkConnection.execute(AppConstants.API_KEY);
     }
 

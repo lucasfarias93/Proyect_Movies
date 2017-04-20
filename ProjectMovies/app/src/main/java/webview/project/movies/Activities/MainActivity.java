@@ -53,7 +53,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if(isNetworkConnected(this)){
             MoviesDataAsynkConnection moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.NOW_PLAYING_MOVIES);
-            this.progressDialog = ProgressDialog.show(this,AppConstants.PROCESS_REQUEST, AppConstants.LOADING);
+            this.progressDialog = new ProgressDialog(this,R.style.AlertDialogCustom);
+            progressDialog.setTitle(AppConstants.PROCESS_REQUEST);
+            progressDialog.setMessage(AppConstants.LOADING);
+            progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progressDialog.show();
             moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
         } else {
             crearDialogoConexion("Internet problems", "Please check your internet connection. Favorite movie list will be loaded..");
@@ -102,7 +106,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.popular_movies:
                 if(isNetworkConnected(this)){
                     moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.POPULAR_MOVIES);
-                    this.progressDialog = ProgressDialog.show(this,AppConstants.PROCESS_REQUEST, AppConstants.LOADING);
+                    this.progressDialog = new ProgressDialog(this,R.style.AlertDialogCustom);
+                    progressDialog.setTitle(AppConstants.PROCESS_REQUEST);
+                    progressDialog.setMessage(AppConstants.LOADING);
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.show();
                     moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
                 } else {
                     crearDialogoConexion("Internet problems", "Please check your internet connection.");
@@ -113,7 +121,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.top_rated_movies:
                 if(isNetworkConnected(this)){
                     moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.TOP_RATED_MOVIES);
-                    this.progressDialog = ProgressDialog.show(this,AppConstants.PROCESS_REQUEST, AppConstants.LOADING);
+                    this.progressDialog = new ProgressDialog(this,R.style.AlertDialogCustom);
+                    progressDialog.setTitle(AppConstants.PROCESS_REQUEST);
+                    progressDialog.setMessage(AppConstants.LOADING);
+                    progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    progressDialog.show();
                     moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
                 } else {
                     crearDialogoConexion("Internet problems", "Please check your internet connection.");
@@ -177,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void loadFavoriteMovies(){}
 
     private AlertDialog crearDialogoConexion(String title, String message) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setMessage(message);
         alertDialogBuilder.create();
