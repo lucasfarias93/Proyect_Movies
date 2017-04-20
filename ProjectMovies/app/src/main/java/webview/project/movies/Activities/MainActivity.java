@@ -29,7 +29,6 @@ import webview.project.movies.Clients.MoviesDataAsynkConnection;
 import webview.project.movies.Entities.MovieData;
 import webview.project.movies.R;
 import webview.project.movies.Utils.AppConstants;
-import webview.project.movies.Utils.SimpleDialog;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MoviesDataAsynkConnection.Callback {
 

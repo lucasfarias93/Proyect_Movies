@@ -1,5 +1,7 @@
 package webview.project.movies.Utils;
 
+import webview.project.movies.R;
+
 /**
  * Created by lfarias on 4/13/17.
  */

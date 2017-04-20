@@ -27,7 +27,7 @@ public class VideoMovieAsynkConnection extends AsyncTask<String,Void,List<VideoD
 
 
     public interface Callback {
-        String getVideoLinkCallback(Object video);
+        void getVideoLinkCallback(Object video);
     }
 
     public VideoMovieAsynkConnection(Callback callback, Context context, Integer movie_id) {

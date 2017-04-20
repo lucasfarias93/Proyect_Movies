@@ -26,6 +26,7 @@
         <item name="colorAccent">@color/colorGold</item>
         <!--title and message color-->
         <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textColorPrimary">@color/colorWhite</item>
         <!--dialog background-->
         <item name="android:windowBackground">@drawable/backgroud_dialog</item>
     </style>
