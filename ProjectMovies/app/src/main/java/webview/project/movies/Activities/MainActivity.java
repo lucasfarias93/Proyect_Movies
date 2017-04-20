@@ -2,8 +2,11 @@ package webview.project.movies.Activities;
 
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import android.support.design.widget.NavigationView;
@@ -48,8 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        initView();
-        if(isNetworkUp()){
+        if(isNetworkConnected(this)){
             MoviesDataAsynkConnection moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.NOW_PLAYING_MOVIES);
             this.progressDialog = ProgressDialog.show(this,AppConstants.PROCESS_REQUEST, AppConstants.LOADING);
             moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
@@ -58,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             loadFavoriteMovies();
         }
 
+        initView();
     }
 
     @Override
@@ -79,12 +82,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
             finish();
         }
@@ -101,15 +100,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch(id){
             case R.id.popular_movies:
-                moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.POPULAR_MOVIES);
-                this.progressDialog = ProgressDialog.show(this,AppConstants.PROCESS_REQUEST, AppConstants.LOADING);
-                moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
+                if(isNetworkConnected(this)){
+                    moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.POPULAR_MOVIES);
+                    this.progressDialog = ProgressDialog.show(this,AppConstants.PROCESS_REQUEST, AppConstants.LOADING);
+                    moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
+                } else {
+                    crearDialogoConexion("Internet problems", "Please check your internet connection.");
+                    loadFavoriteMovies();
+                }
                 break;
 
             case R.id.top_rated_movies:
-                moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.TOP_RATED_MOVIES);
-                this.progressDialog = ProgressDialog.show(this,AppConstants.PROCESS_REQUEST, AppConstants.LOADING);
-                moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
+                if(isNetworkConnected(this)){
+                    moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.TOP_RATED_MOVIES);
+                    this.progressDialog = ProgressDialog.show(this,AppConstants.PROCESS_REQUEST, AppConstants.LOADING);
+                    moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
+                } else {
+                    crearDialogoConexion("Internet problems", "Please check your internet connection.");
+                    loadFavoriteMovies();
+                }
                 break;
 
             case R.id.favorite_movies:
@@ -155,35 +164,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(true);
     }
+    private boolean isNetworkConnected(Context context) {
 
-    public Boolean isNetworkUp(){
-        try {
-            Process p = java.lang.Runtime.getRuntime().exec("ping -c 1 www.google.es");
-
-            int val = p.waitFor();
-            boolean reachable = (val == 0);
-            return reachable;
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+        if (info == null || !info.isConnected() || !info.isAvailable()) {
+            return false;
         }
-        return false;
+        return true;
     }
+
     public void loadFavoriteMovies(){}
 
     private AlertDialog crearDialogoConexion(String title, String message) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
         alertDialogBuilder.setTitle(title);
         alertDialogBuilder.setMessage(message);
-
+        alertDialogBuilder.create();
         DialogInterface.OnClickListener listenerOk = new DialogInterface.OnClickListener() {
-
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
             }
         };
         alertDialogBuilder.setPositiveButton("OK", listenerOk);
-        return alertDialogBuilder.create();
+
+        return alertDialogBuilder.show();
     }
 }
