@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
+import android.graphics.Movie;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -20,12 +21,15 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import java.util.List;
 
+import webview.project.movies.Adapters.FavoriteMoviesAdapter;
 import webview.project.movies.Adapters.GridLayoutAdapter;
 import webview.project.movies.Clients.MoviesDataAsynkConnection;
+import webview.project.movies.Database.FavoriteMoviesDatabase;
 import webview.project.movies.Entities.MovieData;
 import webview.project.movies.R;
 import webview.project.movies.Utils.AppConstants;
@@ -34,21 +38,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private ProgressDialog progressDialog = null;
     private RecyclerView recyclerView;
+    private RecyclerView recyclerViewFavs;
     private GridLayoutAdapter gridLayoutAdapter;
     private String page_num = "1";
     private GridLayoutManager gridLayoutManager;
+    private GridLayoutManager gridLayoutManager2;
     private List<MovieData> myMovieData;
+    private FavoriteMoviesAdapter favoriteMoviesAdapter;
+    private List<MovieData> posters;
     private Toolbar toolbar;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
+    private FavoriteMoviesDatabase helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
 
         if(isNetworkConnected(this)){
             MoviesDataAsynkConnection moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.NOW_PLAYING_MOVIES);
@@ -58,8 +67,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             progressDialog.show();
             moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
+
         } else {
             crearDialogoConexion("Internet problems", "Please check your internet connection. Favorite movie list will be loaded..");
+            recyclerView.setVisibility(View.GONE);
             loadFavoriteMovies();
         }
 
@@ -133,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
 
             case R.id.favorite_movies:
+                recyclerView.setVisibility(View.GONE);
                 loadFavoriteMovies();
                 break;
 
@@ -170,10 +182,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         gridLayoutManager = new GridLayoutManager(MainActivity.this, 2);
+        gridLayoutManager2 = new GridLayoutManager(MainActivity.this, 2);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView_id);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setHasFixedSize(true);
+        recyclerViewFavs = (RecyclerView) findViewById(R.id.recyclerView_favs);
+        recyclerViewFavs.setLayoutManager(gridLayoutManager2);
+        recyclerViewFavs.setHasFixedSize(true);
+
+
     }
     private boolean isNetworkConnected(Context context) {
 
@@ -185,7 +203,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    public void loadFavoriteMovies(){}
+    public void loadFavoriteMovies(){
+        posters = helper.getFavoriteMoviePoster();
+        favoriteMoviesAdapter = new FavoriteMoviesAdapter(MainActivity.this, posters);
+        recyclerView.setAdapter(favoriteMoviesAdapter);
+        if(this.progressDialog != null){
+            this.progressDialog.dismiss();
+        }
+    }
 
     private AlertDialog crearDialogoConexion(String title, String message) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this, R.style.AlertDialogCustom);

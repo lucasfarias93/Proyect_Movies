@@ -3,6 +3,8 @@ package webview.project.movies.Fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -41,6 +43,7 @@ public class MovieDetailsFragment extends Fragment {
     Context context;
     private FloatingActionButton fab;
     FavoriteMoviesDatabase helper;
+    MovieData movieData;
 
     public MovieDetailsFragment() {
         super();
@@ -62,16 +65,23 @@ public class MovieDetailsFragment extends Fragment {
 
     public void actualizarFavoritos() {
         MovieData movie_favorite = new MovieData();
+        movie_favorite.setId(movie_id);
         movie_favorite.setTitle(getActivity().getIntent().getStringExtra("title"));
         movie_favorite.setBackdrop_path(getActivity().getIntent().getStringExtra("backdrop"));
         movie_favorite.setRelease_date(getActivity().getIntent().getStringExtra("date"));
-        movie_favorite.setVote_average(movie_vote);
+   //     movie_favorite.setVote_average(movie_vote);
         movie_favorite.setOverview(getActivity().getIntent().getStringExtra("overview"));
+        movie_favorite.setPoster_path(getActivity().getIntent().getStringExtra("poster"));
         helper.insertMovieData(movie_favorite);
     }
 
-    public void createView(View v) {
+    public  MovieData getMovieData (int MovieID) {
+        movieData = helper.getMovieData(MovieID);
+       //TODO Hacer que guarde los datos con el metodo getMovieData
+        return movieData;
+    }
 
+    public void createView(View v) {
         backdrop = (ImageView) v.findViewById(R.id.backdrop_view);
         title = (TextView) v.findViewById(R.id.title_movie);
         overview = (TextView) v.findViewById(R.id.overview);
@@ -83,27 +93,40 @@ public class MovieDetailsFragment extends Fragment {
         movie_id = b.getInt("id");
 
         movie_vote = b.getDouble("vote");
-        String vote_string = Double.toString(movie_id);
-        title.setText(b.getString("title"));
-        overview.setText(b.getString("overview"));
-        date.setText("Release date: " + b.getString("date"));
-        vote.setText("Vote Average: " + vote_string);
+        String vote_string = Double.toString(movie_vote);
+        if (isNetworkConnected(context)){
 
-        String backdrop_path = b.getString("backdrop");
+            title.setText(b.getString("title"));
+            overview.setText(b.getString("overview"));
+            date.setText("Release date: " + b.getString("date"));
+            vote.setText("Vote Average: " + vote_string);
 
-        Picasso.with(getActivity())
-                .load(AppConstants.BASE_BACKDROP_URL + backdrop_path)
-                .into(backdrop);
+            String backdrop_path = b.getString("backdrop");
 
-        reviews.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getActivity(), ReviewsActivity.class);
-                i.putExtra("movie_id", movie_id);
-                startActivity(i);
-            }
-        });
-        fab = (FloatingActionButton) v.findViewById(R.id.float_button);
+            Picasso.with(getActivity())
+                    .load(AppConstants.BASE_BACKDROP_URL + backdrop_path)
+                    .into(backdrop);
+
+            reviews.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getActivity(), ReviewsActivity.class);
+                    i.putExtra("movie_id", movie_id);
+                    startActivity(i);
+                }
+            });
+            fab = (FloatingActionButton) v.findViewById(R.id.float_button);
+
+        } else {
+            getMovieData(movie_id);
+            title.setText(movieData.getTitle());
+            overview.setText(movieData.getOverview());
+            date.setText(movieData.getRelease_date());
+            Picasso.with(getActivity())
+                    .load(movieData.getBackdrop_path())
+                    .into(backdrop);
+        }
+
     }
 
     @Override
@@ -117,5 +140,14 @@ public class MovieDetailsFragment extends Fragment {
                 actualizarFavoritos();
             }
         });
+    }
+        private boolean isNetworkConnected(Context context) {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = connectivityManager.getActiveNetworkInfo();
+        if (info == null || !info.isConnected() || !info.isAvailable()) {
+            return false;
+        }
+        return true;
     }
 }

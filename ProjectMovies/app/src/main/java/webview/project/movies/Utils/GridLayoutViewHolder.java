@@ -24,6 +24,7 @@ public class GridLayoutViewHolder extends RecyclerView.ViewHolder implements Vie
     private String release_date;
     private Double vote_average;
     private String backdrop_path;
+    private String poster_path;
     private Integer id;
 
     public GridLayoutViewHolder(View v, Context context) {
@@ -47,6 +48,7 @@ public class GridLayoutViewHolder extends RecyclerView.ViewHolder implements Vie
         i.putExtra("vote", vote_average);
         i.putExtra("backdrop", backdrop_path);
         i.putExtra("id", id);
+        i.putExtra("poster", poster_path);
         context.startActivity(i);
     }
 
@@ -56,6 +58,7 @@ public class GridLayoutViewHolder extends RecyclerView.ViewHolder implements Vie
         release_date = movie.getRelease_date();
         vote_average = movie.getVote_average();
         backdrop_path = movie.getBackdrop_path();
+        poster_path = movie.getPoster_path();
         id = movie.getId();
     }
 }
