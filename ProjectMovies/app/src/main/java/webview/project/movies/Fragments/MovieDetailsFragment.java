@@ -1,6 +1,7 @@
 package webview.project.movies.Fragments;
 
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -37,8 +38,9 @@ public class MovieDetailsFragment extends Fragment {
     private TextView reviews;
     int movie_id;
     private double movie_vote;
-
-    FavoriteMoviesDatabase helper = new FavoriteMoviesDatabase(getActivity());
+    Context context;
+    private FloatingActionButton fab;
+    FavoriteMoviesDatabase helper;
 
     public MovieDetailsFragment() {
         super();
@@ -65,7 +67,7 @@ public class MovieDetailsFragment extends Fragment {
         movie_favorite.setRelease_date(getActivity().getIntent().getStringExtra("date"));
         movie_favorite.setVote_average(movie_vote);
         movie_favorite.setOverview(getActivity().getIntent().getStringExtra("overview"));
-        helper.onUpdate(movie_favorite, movie_id);
+        helper.insertMovieData(movie_favorite);
     }
 
     public void createView(View v) {
@@ -93,14 +95,6 @@ public class MovieDetailsFragment extends Fragment {
                 .load(AppConstants.BASE_BACKDROP_URL + backdrop_path)
                 .into(backdrop);
 
-        FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.float_button);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                actualizarFavoritos();
-            }
-        });
-
         reviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,10 +103,19 @@ public class MovieDetailsFragment extends Fragment {
                 startActivity(i);
             }
         });
+        fab = (FloatingActionButton) v.findViewById(R.id.float_button);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        context = getActivity();
+         helper = new FavoriteMoviesDatabase(context);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                actualizarFavoritos();
+            }
+        });
     }
 }
