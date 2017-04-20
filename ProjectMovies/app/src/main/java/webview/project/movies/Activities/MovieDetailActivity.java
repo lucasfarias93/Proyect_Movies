@@ -12,6 +12,7 @@ import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerFragment;
 
+import java.io.File;
 import java.util.List;
 
 import webview.project.movies.Clients.VideoMovieAsynkConnection;
@@ -46,11 +47,11 @@ public class MovieDetailActivity extends YouTubeBaseActivity implements VideoMov
         YouTubePlayerFragment playerFragment = (YouTubePlayerFragment) fm.findFragmentByTag(player_tag);
         MovieDetailsFragment movieDetailsFragment = (MovieDetailsFragment) fm.findFragmentByTag(movie_tag);
         ft = fm.beginTransaction();
-        if(playerFragment == null){
+        if (playerFragment == null) {
             playerFragment = YouTubePlayerFragment.newInstance();
             ft.add(R.id.content_youtube, playerFragment, player_tag);
         }
-        if(movieDetailsFragment == null){
+        if (movieDetailsFragment == null) {
             movieDetailsFragment = new MovieDetailsFragment();
             ft.add(R.id.content_description, movieDetailsFragment, movie_tag);
         }
@@ -80,7 +81,6 @@ public class MovieDetailActivity extends YouTubeBaseActivity implements VideoMov
 
         );
     }
-
 
     @Override
     public String getVideoLinkCallback(Object video) {

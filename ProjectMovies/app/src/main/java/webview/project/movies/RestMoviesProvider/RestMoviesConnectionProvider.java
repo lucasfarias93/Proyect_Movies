@@ -7,6 +7,7 @@ import retrofit2.http.Query;
 import webview.project.movies.Entities.MovieData;
 import webview.project.movies.Entities.MovieVideo;
 import webview.project.movies.Entities.MoviesResult;
+import webview.project.movies.Entities.ReviewResult;
 import webview.project.movies.Entities.VideoDetailObject;
 import webview.project.movies.Utils.AppConstants;
 
@@ -50,6 +51,9 @@ public interface RestMoviesConnectionProvider {
 
     //REVIEW MOVIES
     @GET("movie/{movie_id}/reviews")
-    Call<MoviesResult> getMoviesReview();
+    Call<ReviewResult> getMoviesReview(
+            @Path("movie_id") Integer id,
+            @Query("api_key") String api_key
+    );
 
 }

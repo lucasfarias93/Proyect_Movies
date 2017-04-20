@@ -9,6 +9,7 @@
     <string name="popular_movies">POPULAR MOVIES</string>
     <string name="favorite_movies">FAVORITE MOVIES</string>
     <string name="settings">SETTINGS</string>
+    <string name="link_reviews"><u>Click to see the users reviews</u></string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

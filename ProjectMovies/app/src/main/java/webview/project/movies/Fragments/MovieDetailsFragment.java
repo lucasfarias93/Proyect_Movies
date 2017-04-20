@@ -1,9 +1,12 @@
 package webview.project.movies.Fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,9 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.w3c.dom.Text;
+
+import webview.project.movies.Activities.ReviewsActivity;
 import webview.project.movies.Database.FavoriteMoviesDatabase;
 import webview.project.movies.Entities.MovieData;
 import webview.project.movies.R;
@@ -23,17 +29,18 @@ import webview.project.movies.Utils.AppConstants;
  */
 public class MovieDetailsFragment extends Fragment {
 
-    private ImageView poster;
+    private ImageView backdrop;
     private TextView title;
     private TextView overview;
     private TextView date;
     private TextView vote;
+    private TextView reviews;
     int movie_id;
     private double movie_vote;
 
     FavoriteMoviesDatabase helper = new FavoriteMoviesDatabase(getActivity());
 
-    public MovieDetailsFragment(){
+    public MovieDetailsFragment() {
         super();
     }
 
@@ -51,23 +58,24 @@ public class MovieDetailsFragment extends Fragment {
         return v;
     }
 
-    public void actualizarFavoritos (){
+    public void actualizarFavoritos() {
         MovieData movie_favorite = new MovieData();
         movie_favorite.setTitle(getActivity().getIntent().getStringExtra("title"));
         movie_favorite.setBackdrop_path(getActivity().getIntent().getStringExtra("backdrop"));
         movie_favorite.setRelease_date(getActivity().getIntent().getStringExtra("date"));
         movie_favorite.setVote_average(movie_vote);
         movie_favorite.setOverview(getActivity().getIntent().getStringExtra("overview"));
-        helper.onUpdate(movie_favorite,movie_id);
+        helper.onUpdate(movie_favorite, movie_id);
     }
 
-    public void createView(View v){
+    public void createView(View v) {
 
-        poster = (ImageView) v.findViewById(R.id.poster_view);
+        backdrop = (ImageView) v.findViewById(R.id.backdrop_view);
         title = (TextView) v.findViewById(R.id.title_movie);
         overview = (TextView) v.findViewById(R.id.overview);
         vote = (TextView) v.findViewById(R.id.vote);
         date = (TextView) v.findViewById(R.id.date);
+        reviews = (TextView) v.findViewById(R.id.link_reviews);
 
         Bundle b = getActivity().getIntent().getExtras();
         movie_id = b.getInt("id");
@@ -79,11 +87,11 @@ public class MovieDetailsFragment extends Fragment {
         date.setText("Release date: " + b.getString("date"));
         vote.setText("Vote Average: " + vote_string);
 
-        String poster_path = b.getString("poster");
+        String backdrop_path = b.getString("backdrop");
 
         Picasso.with(getActivity())
-                .load(AppConstants.BASE_BACKDROP_URL + poster_path)
-                .into(poster);
+                .load(AppConstants.BASE_BACKDROP_URL + backdrop_path)
+                .into(backdrop);
 
         FloatingActionButton fab = (FloatingActionButton) v.findViewById(R.id.float_button);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -93,6 +101,14 @@ public class MovieDetailsFragment extends Fragment {
             }
         });
 
+        reviews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), ReviewsActivity.class);
+                i.putExtra("movie_id", movie_id);
+                startActivity(i);
+            }
+        });
     }
 
     @Override

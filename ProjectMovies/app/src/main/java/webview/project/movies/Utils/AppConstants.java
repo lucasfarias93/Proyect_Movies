@@ -7,7 +7,6 @@ public class AppConstants {
 
     public static final String API_KEY = "589e10387e0ca4ece633f5836fb0383f";
     public static final String API_URL = "https://api.themoviedb.org/3/";
-    public static final String DEFAULT_LANGUAGE = "en";
     public static final String LANGUAJE_ES = "es";
     public static final Integer NOW_PLAYING_MOVIES = 0;
     public static final Integer POPULAR_MOVIES = 1;
@@ -17,6 +16,5 @@ public class AppConstants {
     public static final String CUSTOM_SETTINGS = "Custom your Settings Menu Option";
     public static final String BASE_POSTER_GRID_URL = "https://image.tmdb.org/t/p/w780";
     public static final String BASE_BACKDROP_URL = "https://image.tmdb.org/t/p/w780";
-    public static final String BASE_VIDEO_URL = "https://www.youtube.com/watch?v=";
     public static final String YOUTUBE_KEY = "AIzaSyDE18opuRo8CvyJqQf0AfiMBT_xwvTxaSE";
 }
