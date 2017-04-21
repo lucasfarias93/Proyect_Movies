@@ -9,7 +9,6 @@ import java.util.List;
  * Created by LUCAS on 20/04/2017.
  */
 public class PersistentMovieData {
-    private byte[] poster_path;
     private Integer id;
     private String overview;
     private String release_date;
@@ -30,14 +29,6 @@ public class PersistentMovieData {
 
     public void setPopularity(Double popularity) {
         this.popularity = popularity;
-    }
-
-    public byte[] getBackdrop_path() {
-        return backdrop_path;
-    }
-
-    public void setBackdrop_path(byte[] backdrop_path) {
-        this.backdrop_path = backdrop_path;
     }
 
     public String getTitle() {
@@ -120,20 +111,11 @@ public class PersistentMovieData {
         this.id = id;
     }
 
-    public byte[] getPoster_path() {
-        return poster_path;
-    }
-
-    public void setPoster_path(byte[] poster_path) {
-        this.poster_path = poster_path;
-    }
-
     private Double vote_average;
     private boolean video;
     private Boolean adult;
     private List<Integer> genre_ids = new ArrayList<Integer>();
     private String title;
-    private byte[] backdrop_path;
     private Double popularity;
     private Integer vote_count;
 

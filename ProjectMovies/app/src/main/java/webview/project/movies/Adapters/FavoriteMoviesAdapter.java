@@ -1,6 +1,7 @@
 package webview.project.movies.Adapters;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
@@ -8,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.squareup.picasso.Picasso;
+
+import java.io.File;
 import java.util.List;
 
 import webview.project.movies.Database.DBaseBitmapUtility;
@@ -46,9 +49,12 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter <FavsViewHolder>
     @Override
     public void onBindViewHolder(FavsViewHolder holder, int position) {
         PersistentMovieData movie = posters.get(position);
-        Bitmap posterImage = null;
-        posterImage = DBaseBitmapUtility.getImage(movie.getPoster_path());
-        holder.moviePoster.setImageBitmap(posterImage);
+        ContextWrapper cw = new ContextWrapper(context);
+        File directory = cw.getDir("poster_dir", Context.MODE_PRIVATE);
+        File myImageFile = new File(directory, movie.getOriginal_title() + "/poster.jpeg");
+        Picasso.with(context)
+                .load(myImageFile)
+                .into(holder.moviePoster);
 
         holder.setOnClickListeners(movie);
     }

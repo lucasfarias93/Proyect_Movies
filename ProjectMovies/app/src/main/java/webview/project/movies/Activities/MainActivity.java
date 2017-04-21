@@ -199,6 +199,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void loadFavoriteMovies(){
         posters = helper.getFavoriteMovies();
         if(!posters.isEmpty()){
+            recyclerView.setVisibility(View.GONE);
+            recyclerViewFavs.setVisibility(View.VISIBLE);
             favoriteMoviesAdapter = new FavoriteMoviesAdapter(MainActivity.this, posters);
             recyclerViewFavs.setAdapter(favoriteMoviesAdapter);
         }else {

@@ -15,8 +15,9 @@
         />
 
     <TextView
-        android:id="@+id/author"
+        android:id="@+id/author_header"
         android:layout_width="match_parent"
+<<<<<<< Updated upstream
         android:layout_height="wrap_content"
         android:paddingTop="15dp"
         android:textSize="18sp"
@@ -24,8 +25,11 @@
 
         android:textAlignment="viewStart" />
 
+=======
+        android:layout_height="wrap_content"/>
+>>>>>>> Stashed changes
     <TextView
-        android:id="@+id/content"
+        android:id="@+id/author"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="5dp"
@@ -36,6 +40,7 @@
     <TextView
         android:id="@+id/comments_header"
         android:layout_width="match_parent"
+<<<<<<< Updated upstream
         android:layout_height="wrap_content"
         android:clickable="true"
         android:textSize="18sp"
@@ -44,6 +49,11 @@
 
     <TextView
         android:id="@+id/author_header"
+=======
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/content"
+>>>>>>> Stashed changes
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"

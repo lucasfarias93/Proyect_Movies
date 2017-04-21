@@ -3,13 +3,8 @@ package webview.project.movies.Fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -21,12 +16,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
-
-import java.io.InputStream;
-import java.net.ConnectException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import webview.project.movies.Activities.ReviewsActivity;
 import webview.project.movies.Database.DBaseBitmapUtility;
@@ -35,6 +24,8 @@ import webview.project.movies.Entities.MovieData;
 import webview.project.movies.Entities.PersistentMovieData;
 import webview.project.movies.R;
 import webview.project.movies.Utils.AppConstants;
+
+import static webview.project.movies.Database.DBaseBitmapUtility.imageDownload;
 
 /**
  * Created by lfarias on 4/19/17.
@@ -76,36 +67,28 @@ public class MovieDetailsFragment extends Fragment {
 
     public void actualizarFavoritos() {
         PersistentMovieData movie_favorite = new PersistentMovieData();
-        Bitmap poster;
-        Bitmap backdrop;
-        byte[] posterBytes = null;
-        byte[] backdropBytes = null;
-        try{
-            URL images_url = new URL(AppConstants.BASE_POSTER_GRID_URL + b.getString("poster"));
-            poster = BitmapFactory.decodeStream(images_url.openConnection().getInputStream());
+        String movie_title = (getActivity().getIntent().getStringExtra("title"));
 
-            images_url = new URL(AppConstants.BASE_POSTER_GRID_URL + b.getString("backdrop"));
-            backdrop = BitmapFactory.decodeStream(images_url.openConnection().getInputStream());
+        Picasso.with(context)
+                .load(AppConstants.BASE_BACKDROP_URL + b.getString("poster"))
+                .into((DBaseBitmapUtility.imageDownload(context, "poster_dir", movie_title + "/poster.jpeg")));
 
-            posterBytes = DBaseBitmapUtility.getBytes(poster);
-            backdropBytes = DBaseBitmapUtility.getBytes(backdrop);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        Picasso.with(context)
+                .load(AppConstants.BASE_BACKDROP_URL + b.getString("backdrop"))
+                .into((DBaseBitmapUtility.imageDownload(context, "backdrop_dir", movie_title + "/backdrop.jpeg")));
+
 
         movie_favorite.setId(movie_id);
         movie_favorite.setTitle(getActivity().getIntent().getStringExtra("title"));
-        movie_favorite.setBackdrop_path(backdropBytes);
         movie_favorite.setRelease_date(getActivity().getIntent().getStringExtra("date"));
         movie_favorite.setVote_average(movie_vote);
         movie_favorite.setOverview(getActivity().getIntent().getStringExtra("overview"));
-        movie_favorite.setPoster_path(posterBytes);
         helper.insertMovieData(movie_favorite);
     }
 
-    public  MovieData getMovieData (int MovieID) {
+    public MovieData getMovieData(int MovieID) {
         movieData = helper.getMovieData(MovieID);
-       //TODO Hacer que guarde los datos con el metodo getMovieData
+        //TODO Hacer que guarde los datos con el metodo getMovieData
         return movieData;
     }
 
@@ -121,7 +104,7 @@ public class MovieDetailsFragment extends Fragment {
 
         movie_vote = b.getDouble("vote");
         vote_string = Double.toString(movie_vote);
-        if (AppConstants.isNetworkConnected(getActivity())){
+        if (AppConstants.isNetworkConnected(getActivity())) {
 
             title.setText(b.getString("title"));
             overview.setText(b.getString("overview"));
@@ -145,13 +128,13 @@ public class MovieDetailsFragment extends Fragment {
             fab = (FloatingActionButton) v.findViewById(R.id.float_button);
 
         } else {
-            getMovieData(movie_id);
+            /*getMovieData(movie_id);
             title.setText(movieData.getTitle());
             overview.setText(movieData.getOverview());
             date.setText(movieData.getRelease_date());
             Picasso.with(getActivity())
                     .load(movieData.getBackdrop_path())
-                    .into(backdrop);
+                    .into(backdrop);*/
         }
     }
 
@@ -159,7 +142,7 @@ public class MovieDetailsFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         context = getActivity();
-         helper = new FavoriteMoviesDatabase(context);
+        helper = new FavoriteMoviesDatabase(context);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
