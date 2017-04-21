@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import webview.project.movies.Entities.MovieData;
+import webview.project.movies.Entities.PersistentMovieData;
 
 /**
  * Created by Elias on 18/04/2017.
@@ -43,52 +44,30 @@ public class FavoriteMoviesDatabase extends SQLiteOpenHelper {
         this.db = db;
     }
 
-    public void insertMovieData(MovieData mData) {
+    public void insertMovieData(PersistentMovieData mData) {
         db = this.getWritableDatabase();
+        String posterPath = new String(mData.getPoster_path());
+        String backdropPath = new String(mData.getBackdrop_path());
+        String voteCount = Double.toString(mData.getVote_average());
         ContentValues values = new ContentValues();
         String query = " select * from details ";
         Cursor cursor = db.rawQuery(query, null);
+
         int count = cursor.getCount();
 
         values.put(ID, count);
         values.put(ID_MOVIE,mData.getId());
         values.put(COLUMN_TITLE, mData.getTitle());
         values.put(COLUMN_OVERVIEW, mData.getOverview());
-        values.put(COLUMN_POSTER, mData.getBackdrop_path());
-        values.put(COLUMN_VOTE, mData.getVote_count());
+        values.put(COLUMN_POSTER, backdropPath);
+        values.put(COLUMN_VOTE, voteCount);
         values.put(COLUMN_DATE, mData.getRelease_date());
-        values.put(COLUMN_MAIN_POSTER,mData.getPoster_path());
+        values.put(COLUMN_MAIN_POSTER, posterPath);
 
         db.insert(TABLE_NAME_DETAILS, null , values);
         cursor.close();
         db.close();
     }
-
-   /* public void onUpdate(MovieData mData, int movie) {
-        db = this.getWritableDatabase();
-        String query = "select id from " + TABLE_NAME_DETAILS;
-        Cursor cursor = db.rawQuery(query, null);
-        Integer a;
-        int id = cursor.getCount();
-        if (cursor.moveToFirst()) {
-            do {
-                a = cursor.getInt(0);
-                if (a.equals(movie)) {
-                    ContentValues values = new ContentValues();
-                    values.put(ID_MOVIE,mData.getId());
-                    values.put(COLUMN_TITLE, mData.getTitle());
-                    values.put(COLUMN_OVERVIEW, mData.getOverview());
-                    values.put(COLUMN_POSTER, mData.getBackdrop_path());
-                    values.put(COLUMN_VOTE, mData.getVote_count());
-                    values.put(COLUMN_DATE, mData.getRelease_date());
-
-                    insertMovieData(mData);
-                    db.close();
-                }
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-    } */
 
     public MovieData getMovieData(int movieID) {
         MovieData movie = new MovieData();
@@ -116,21 +95,26 @@ public class FavoriteMoviesDatabase extends SQLiteOpenHelper {
         return null;
     }
 
-    public List<MovieData> getFavoriteMoviePoster () {
-       List <MovieData> movieposters = new ArrayList<>();
+    public List<PersistentMovieData> getFavoriteMovies() {
+       List <PersistentMovieData> movies = new ArrayList<>();
         db = this.getReadableDatabase();
-        String query = " select posterMain from " + TABLE_NAME_DETAILS;
+        String query = " select idMovie , title , overview , poster , vote , date , posterMain from " + TABLE_NAME_DETAILS;
         Cursor cursor = db.rawQuery(query, null);
-        while (cursor.moveToNext());
-
-        {
-             MovieData movies = new MovieData();
-            movies.setPoster_path(cursor.getString(0));
-            movieposters.add(movies);
+        if( cursor != null && cursor.moveToFirst() ) {
+            do{
+                PersistentMovieData movieObject = new PersistentMovieData();
+                movieObject.setId(cursor.getInt(0));
+                movieObject.setTitle(cursor.getString(1));
+                movieObject.setOverview(cursor.getString(2));
+                movieObject.setBackdrop_path(cursor.getString(3).getBytes());
+                movieObject.setVote_average(cursor.getDouble(4));
+                movieObject.setRelease_date(cursor.getString(5));
+                movieObject.setPoster_path(cursor.getString(6).getBytes());
+                movies.add(movieObject);
+            }  while (cursor.moveToNext());
+            cursor.close();
         }
-        cursor.close();
-        return movieposters;
-
+        return movies;
     }
 
     @Override

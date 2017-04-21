@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 
 import webview.project.movies.Activities.MovieDetailActivity;
 import webview.project.movies.Entities.MovieData;
+import webview.project.movies.Entities.PersistentMovieData;
 import webview.project.movies.R;
 
 /**
@@ -19,7 +20,7 @@ public class FavsViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     public ImageView moviePoster;
     RelativeLayout layoutItemGrid;
     public Context context;
-    MovieData movie;
+    PersistentMovieData movie;
 
 
     public FavsViewHolder(View v, Context context) {
@@ -29,7 +30,7 @@ public class FavsViewHolder extends RecyclerView.ViewHolder implements View.OnCl
         layoutItemGrid = (RelativeLayout) v.findViewById(R.id.relative_grid_layout_favs);
     }
 
-    public void setOnClickListeners(MovieData movie) {
+    public void setOnClickListeners(PersistentMovieData movie) {
         layoutItemGrid.setOnClickListener(this);
         this.movie  = movie;
     }
@@ -41,7 +42,5 @@ public class FavsViewHolder extends RecyclerView.ViewHolder implements View.OnCl
 
         context.startActivity(i);
     }
-
-
 }
 
