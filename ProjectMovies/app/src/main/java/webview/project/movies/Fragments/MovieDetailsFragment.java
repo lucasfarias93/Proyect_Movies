@@ -70,6 +70,7 @@ public class MovieDetailsFragment extends Fragment {
         PersistentMovieData movie_favorite = new PersistentMovieData();
         String movie_title = (getActivity().getIntent().getStringExtra("title"));
 
+
         Picasso.with(context)
                 .load(AppConstants.BASE_BACKDROP_URL + b.getString("poster"))
                 .into((DBaseBitmapUtility.imageDownload(context, "poster_dir", movie_title + "/poster.jpeg")));

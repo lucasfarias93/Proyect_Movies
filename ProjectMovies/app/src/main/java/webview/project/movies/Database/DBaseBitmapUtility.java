@@ -39,40 +39,27 @@ public class DBaseBitmapUtility {
     }
     //target to save image
     public static Target imageDownload(Context context, final String imageDir, final String imageName){
-        Target target = new Target(){
-
+        Target target = new Target() {
             @Override
-            public void onBitmapLoaded(final Bitmap bitmap, Picasso.LoadedFrom from) {
-                new Thread(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        String root = Environment.getExternalStorageDirectory().toString();
-                        File myDir = new File(root + "/saved_images");
-                        myDir.mkdirs();
-
-                        String fname = imageName;
-                        File file = new File (myDir, fname);
-
+            public void onBitmapLoaded (final Bitmap bitmap, Picasso.LoadedFrom from){
+                File file = Environment.getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_DOWNLOADS);
                         try {
-                            if (!file.exists ()){
-                                file.createNewFile();
-                            }
-                            FileOutputStream out = new FileOutputStream(file);
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
-                            out.flush();
-                            out.close();
-
+                            File imageFile = File.createTempFile(
+                                    imageName,  /* prefix */
+                                    ".jpg",         /* suffix */
+                                    file      /* directory */
+                            );
+                            FileOutputStream imageOutputStream = new FileOutputStream(imageFile);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 75, imageOutputStream);
+                            imageOutputStream.close();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
-
-                    }
-                }).start();
             }
             @Override
             public void onBitmapFailed(Drawable errorDrawable) {
-
+                Log.e("","");
             }
 
             @Override
