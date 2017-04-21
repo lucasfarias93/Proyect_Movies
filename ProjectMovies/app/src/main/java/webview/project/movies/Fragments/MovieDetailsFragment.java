@@ -94,7 +94,7 @@ public class MovieDetailsFragment extends Fragment {
 
         movie_vote = b.getDouble("vote");
         String vote_string = Double.toString(movie_vote);
-        if (isNetworkConnected(context)){
+        if (isNetworkConnected(getActivity())){
 
             title.setText(b.getString("title"));
             overview.setText(b.getString("overview"));
