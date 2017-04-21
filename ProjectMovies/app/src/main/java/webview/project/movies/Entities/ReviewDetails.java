@@ -1,8 +1,6 @@
 package webview.project.movies.Entities;
 
-/**
- * Created by LUCAS on 19/04/2017.
- */
+
 public class ReviewDetails {
     private String id;
     private String author;

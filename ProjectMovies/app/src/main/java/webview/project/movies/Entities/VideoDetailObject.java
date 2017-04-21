@@ -1,8 +1,5 @@
 package webview.project.movies.Entities;
 
-/**
- * Created by lfarias on 4/12/17.
- */
 public class VideoDetailObject {
 
     private String id;

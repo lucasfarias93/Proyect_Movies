@@ -2,10 +2,6 @@ package webview.project.movies.Entities;
 
 import java.util.ArrayList;
 
-/**
- *
- * Created by lfarias on 4/12/17.
- */
 public class MovieVideo {
     public Integer getId() {
         return id;

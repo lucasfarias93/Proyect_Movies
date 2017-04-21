@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by lfarias on 4/12/17.
- */
 public class MovieData implements Serializable {
 
     private String poster_path;

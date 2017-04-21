@@ -6,9 +6,7 @@ import android.net.NetworkInfo;
 
 import webview.project.movies.R;
 
-/**
- * Created by lfarias on 4/13/17.
- */
+
 public class AppConstants {
 
     public static final String API_KEY = "589e10387e0ca4ece633f5836fb0383f";

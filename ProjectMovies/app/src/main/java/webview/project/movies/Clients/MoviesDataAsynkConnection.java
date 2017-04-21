@@ -1,6 +1,5 @@
 package webview.project.movies.Clients;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 
@@ -13,10 +12,6 @@ import webview.project.movies.Entities.MovieData;
 import webview.project.movies.Entities.MoviesResult;
 import webview.project.movies.RestMoviesProvider.RestMoviesConnectionProvider;
 import webview.project.movies.RetrofitHelper.RetrofitHelper;
-
-/**
- * Created by lfarias on 4/12/17.
- */
 
 //AsyncTask used to connect with the API only in case the search filter is set with Top Rated or Most Popular movies
 public class MoviesDataAsynkConnection extends AsyncTask<String,Void,List<MovieData>>{

@@ -13,9 +13,6 @@ import webview.project.movies.Entities.ReviewResult;
 import webview.project.movies.RestMoviesProvider.RestMoviesConnectionProvider;
 import webview.project.movies.RetrofitHelper.RetrofitHelper;
 
-/**
- * Created by LUCAS on 19/04/2017.
- */
 public class ReviewsMovieAsynkConnection extends AsyncTask<String,Void,List<ReviewDetails>> {
 
     List<ReviewDetails> reviewDetailsList;

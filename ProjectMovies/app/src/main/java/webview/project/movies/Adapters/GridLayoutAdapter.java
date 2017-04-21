@@ -22,9 +22,6 @@ import webview.project.movies.R;
 import webview.project.movies.Utils.AppConstants;
 import webview.project.movies.Utils.GridLayoutViewHolder;
 
-/**
- * Created by LUCAS on 13/04/2017.
- */
 public class GridLayoutAdapter extends RecyclerView.Adapter<GridLayoutViewHolder> {
     public List<MovieData> myMovieDataList;
     public Context context;

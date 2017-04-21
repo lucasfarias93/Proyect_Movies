@@ -8,15 +8,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import webview.project.movies.Activities.MovieDetailActivity;
-import webview.project.movies.Entities.MovieData;
 import webview.project.movies.Entities.PersistentMovieData;
 import webview.project.movies.R;
 
-/**
- * Created by Elias on 20/04/2017.
- */
 
-public class FavsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+public class FavsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     public ImageView moviePoster;
     RelativeLayout layoutItemGrid;
     public Context context;
@@ -32,8 +28,9 @@ public class FavsViewHolder extends RecyclerView.ViewHolder implements View.OnCl
 
     public void setOnClickListeners(PersistentMovieData movie) {
         layoutItemGrid.setOnClickListener(this);
-        this.movie  = movie;
+        this.movie = movie;
     }
+
     @Override
     public void onClick(View view) {
         Intent i = new Intent(context, MovieDetailActivity.class);

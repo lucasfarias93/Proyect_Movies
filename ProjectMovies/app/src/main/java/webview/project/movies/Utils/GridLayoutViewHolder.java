@@ -11,9 +11,7 @@ import webview.project.movies.Activities.MovieDetailActivity;
 import webview.project.movies.Entities.MovieData;
 import webview.project.movies.R;
 
-/**
- * Created by lfarias on 4/17/17.
- */
+
 public class GridLayoutViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     public ImageView moviePoster;
     RelativeLayout layoutItemGrid;
@@ -36,13 +34,14 @@ public class GridLayoutViewHolder extends RecyclerView.ViewHolder implements Vie
 
     public void setOnClickListeners(MovieData movie) {
         layoutItemGrid.setOnClickListener(this);
-        this.movie  = movie;
+        this.movie = movie;
     }
+
     @Override
     public void onClick(View view) {
         Intent i = new Intent(context, MovieDetailActivity.class);
         getMovieDetailItems(movie);
-        i.putExtra("title",original_title);
+        i.putExtra("title", original_title);
         i.putExtra("overview", overview);
         i.putExtra("date", release_date);
         i.putExtra("vote", vote_average);
@@ -52,7 +51,7 @@ public class GridLayoutViewHolder extends RecyclerView.ViewHolder implements Vie
         context.startActivity(i);
     }
 
-    public void getMovieDetailItems(MovieData movie){
+    public void getMovieDetailItems(MovieData movie) {
         original_title = movie.getOriginal_title();
         overview = movie.getOverview();
         release_date = movie.getRelease_date();

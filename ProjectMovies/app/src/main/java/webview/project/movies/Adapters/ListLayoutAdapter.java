@@ -14,9 +14,6 @@ import java.util.List;
 import webview.project.movies.Entities.ReviewDetails;
 import webview.project.movies.R;
 
-/**
- * Created by LUCAS on 19/04/2017.
- */
 public class ListLayoutAdapter extends RecyclerView.Adapter<ListLayoutAdapter.ListLayoutViewHolder> {
     public List<ReviewDetails> reviewDetailsList;
     public Context context;

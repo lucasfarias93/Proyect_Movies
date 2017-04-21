@@ -7,13 +7,15 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.Toolbar;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -26,11 +28,7 @@ import webview.project.movies.Entities.PersistentMovieData;
 import webview.project.movies.R;
 import webview.project.movies.Utils.AppConstants;
 
-import static webview.project.movies.Database.DBaseBitmapUtility.imageDownload;
 
-/**
- * Created by lfarias on 4/19/17.
- */
 public class MovieDetailsFragment extends Fragment {
 
     private ImageView backdrop;
@@ -38,7 +36,7 @@ public class MovieDetailsFragment extends Fragment {
     private TextView overview;
     private TextView date;
     private TextView vote;
-    private TextView reviews;
+    private Button reviews;
     int movie_id;
     private double movie_vote;
     String vote_string;
@@ -99,10 +97,10 @@ public class MovieDetailsFragment extends Fragment {
         overview = (TextView) v.findViewById(R.id.overview);
         vote = (TextView) v.findViewById(R.id.vote);
         date = (TextView) v.findViewById(R.id.date);
-        reviews = (TextView) v.findViewById(R.id.link_reviews);
+        reviews = (Button) v.findViewById(R.id.link_reviews);
 
-        Typeface customFont2 = Typeface.createFromAsset(getActivity().getAssets(),"fonts/AngularRounded.ttf");
-        Typeface customFont3 = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Heroes.ttf");
+        Typeface customFont2 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/AngularRounded.ttf");
+        Typeface customFont3 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Heroes.ttf");
 
         title.setTypeface(customFont3);
         date.setTypeface(customFont2);
@@ -154,6 +152,7 @@ public class MovieDetailsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 actualizarFavoritos();
+                Toast.makeText(getActivity(),"Pelicula Guardada en Favoritos!!",Toast.LENGTH_LONG).show();
             }
         });
     }

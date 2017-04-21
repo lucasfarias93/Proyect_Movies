@@ -4,18 +4,11 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import webview.project.movies.Entities.MovieData;
+
 import webview.project.movies.Entities.MovieVideo;
 import webview.project.movies.Entities.MoviesResult;
 import webview.project.movies.Entities.ReviewResult;
-import webview.project.movies.Entities.VideoDetailObject;
-import webview.project.movies.Utils.AppConstants;
 
-import java.util.List;
-
-/**
- * Created by lfarias on 4/12/17.
- */
 public interface RestMoviesConnectionProvider {
 
     //MOST POPULAR MOVVIES

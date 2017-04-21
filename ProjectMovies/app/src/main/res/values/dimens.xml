@@ -15,4 +15,8 @@
     <dimen name="minpadding">2dp</dimen>
     <dimen name="imageHeight">300dp</dimen>
     <dimen name="size8dp">8dp</dimen>
+    <dimen name="size18sp">18sp</dimen>
+    <dimen name="Size5dp">5dp</dimen>
+    <dimen name="Size2dp">2dp</dimen>
+    <dimen name="Size1dp">1dp</dimen>
 </resources>

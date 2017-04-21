@@ -4,9 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by lfarias on 4/13/17.
- */
+
 public class MoviesResult implements Serializable {
     private List<MovieData> results = new ArrayList<MovieData>();
     private Integer page;

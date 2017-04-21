@@ -20,10 +20,6 @@ import webview.project.movies.R;
 import webview.project.movies.Utils.AppConstants;
 import webview.project.movies.Utils.FavsViewHolder;
 
-/**
- * Created by Elias on 20/04/2017.
- */
-
 public class FavoriteMoviesAdapter extends RecyclerView.Adapter <FavsViewHolder>{
 
     public List<PersistentMovieData> posters;

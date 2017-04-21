@@ -1,13 +1,11 @@
 package webview.project.movies.Entities;
 
-import android.graphics.Bitmap;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by LUCAS on 20/04/2017.
- */
+
 public class PersistentMovieData {
     private Integer id;
     private String overview;

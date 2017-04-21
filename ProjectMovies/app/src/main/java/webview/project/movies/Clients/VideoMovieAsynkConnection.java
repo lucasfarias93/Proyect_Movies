@@ -8,16 +8,11 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
-import webview.project.movies.Entities.MovieData;
 import webview.project.movies.Entities.MovieVideo;
-import webview.project.movies.Entities.MoviesResult;
 import webview.project.movies.Entities.VideoDetailObject;
 import webview.project.movies.RestMoviesProvider.RestMoviesConnectionProvider;
 import webview.project.movies.RetrofitHelper.RetrofitHelper;
 
-/**
- * Created by lfarias on 4/18/17.
- */
 public class VideoMovieAsynkConnection extends AsyncTask<String,Void,List<VideoDetailObject>> {
 
     List<VideoDetailObject> videoDataList;

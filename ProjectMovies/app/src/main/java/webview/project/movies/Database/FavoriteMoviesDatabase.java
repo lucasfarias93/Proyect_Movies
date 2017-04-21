@@ -12,9 +12,6 @@ import java.util.List;
 import webview.project.movies.Entities.MovieData;
 import webview.project.movies.Entities.PersistentMovieData;
 
-/**
- * Created by Elias on 18/04/2017.
- */
 
 public class FavoriteMoviesDatabase extends SQLiteOpenHelper {
 

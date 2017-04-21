@@ -2,9 +2,6 @@ package webview.project.movies.Entities;
 
 import java.util.ArrayList;
 
-/**
- * Created by LUCAS on 19/04/2017.
- */
 public class ReviewResult {
     private Integer id;
     private Integer page;
