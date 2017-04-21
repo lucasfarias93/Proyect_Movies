@@ -1,8 +1,11 @@
 package webview.project.movies.Fragments;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,8 +23,11 @@ import android.widget.Toast;
 import com.squareup.picasso.Picasso;
 
 
+import java.io.File;
+import java.util.ArrayList;
+
 import webview.project.movies.Activities.ReviewsActivity;
-import webview.project.movies.Database.DBaseBitmapUtility;
+import webview.project.movies.Clients.FavoriteImagesAsynkConnection;
 import webview.project.movies.Database.FavoriteMoviesDatabase;
 import webview.project.movies.Entities.MovieData;
 import webview.project.movies.Entities.PersistentMovieData;
@@ -29,7 +35,7 @@ import webview.project.movies.R;
 import webview.project.movies.Utils.AppConstants;
 
 
-public class MovieDetailsFragment extends Fragment {
+public class MovieDetailsFragment extends Fragment implements FavoriteImagesAsynkConnection.Callback{
 
     private ImageView backdrop;
     private TextView title;
@@ -37,13 +43,15 @@ public class MovieDetailsFragment extends Fragment {
     private TextView date;
     private TextView vote;
     private Button reviews;
+    String poster_path;
+    String final_backdrop_path;
     int movie_id;
+    PersistentMovieData movie_favorite;
     private double movie_vote;
     String vote_string;
     Context context;
     private FloatingActionButton fab;
     FavoriteMoviesDatabase helper;
-    MovieData movieData;
     Bundle b;
 
     public MovieDetailsFragment() {
@@ -65,30 +73,10 @@ public class MovieDetailsFragment extends Fragment {
     }
 
     public void actualizarFavoritos() {
-        PersistentMovieData movie_favorite = new PersistentMovieData();
-        String movie_title = (getActivity().getIntent().getStringExtra("title"));
+    String movie_title = getActivity().getIntent().getStringExtra("title");
+        FavoriteImagesAsynkConnection favoriteImagesAsynkConnection = new FavoriteImagesAsynkConnection(this, context);
+        favoriteImagesAsynkConnection.execute((AppConstants.BASE_POSTER_GRID_URL + b.getString("poster")),(AppConstants.BASE_BACKDROP_URL + b.getString("backdrop")), movie_title);
 
-
-        Picasso.with(context)
-                .load(AppConstants.BASE_BACKDROP_URL + b.getString("poster"))
-                .into((DBaseBitmapUtility.imageDownload(context, "poster_dir", movie_title + "/poster.jpeg")));
-
-        Picasso.with(context)
-                .load(AppConstants.BASE_BACKDROP_URL + b.getString("backdrop"))
-                .into((DBaseBitmapUtility.imageDownload(context, "backdrop_dir", movie_title + "/backdrop.jpeg")));
-
-
-        movie_favorite.setId(movie_id);
-        movie_favorite.setTitle(getActivity().getIntent().getStringExtra("title"));
-        movie_favorite.setRelease_date(getActivity().getIntent().getStringExtra("date"));
-        movie_favorite.setVote_average(movie_vote);
-        movie_favorite.setOverview(getActivity().getIntent().getStringExtra("overview"));
-        helper.insertMovieData(movie_favorite);
-    }
-
-    public MovieData getMovieData(int MovieID) {
-        movieData = helper.getMovieData(MovieID);
-        return movieData;
     }
 
     public void createView(View v) {
@@ -103,7 +91,10 @@ public class MovieDetailsFragment extends Fragment {
         Typeface customFont3 = Typeface.createFromAsset(getActivity().getAssets(), "fonts/Heroes.ttf");
 
         title.setTypeface(customFont3);
-        date.setTypeface(customFont2);
+        date.setTypeface(customFont3);
+        vote.setTypeface(customFont3);
+
+        overview.setTypeface(customFont2);
 
         movie_id = b.getInt("id");
 
@@ -133,27 +124,66 @@ public class MovieDetailsFragment extends Fragment {
             fab = (FloatingActionButton) v.findViewById(R.id.float_button);
 
         } else {
-            /*getMovieData(movie_id);
-            title.setText(movieData.getTitle());
-            overview.setText(movieData.getOverview());
-            date.setText(movieData.getRelease_date());
-            Picasso.with(getActivity())
-                    .load(movieData.getBackdrop_path())
-                    .into(backdrop);*/
+
+            title.setText(b.getString("title"));
+            overview.setText(b.getString("overview"));
+            date.setText("Release date: " + b.getString("date"));
+            vote.setText("Vote Average: " + vote_string);
+
+            String backdrop_path = b.getString("backdrop");
+
+            File imgFile = new File(backdrop_path);
+            if (imgFile.exists()) {
+                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                backdrop.setImageBitmap(myBitmap);
+            }
+            fab = (FloatingActionButton) v.findViewById(R.id.float_button);
+            fab.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "Option enable only with internet connection", Toast.LENGTH_LONG).show();
+                }
+            });
+
+            reviews.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(getActivity(), ReviewsActivity.class);
+                    i.putExtra("movie_id", movie_id);
+                    startActivity(i);
+                }
+            });
         }
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        movie_favorite = new PersistentMovieData();
         context = getActivity();
         helper = new FavoriteMoviesDatabase(context);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 actualizarFavoritos();
-                Toast.makeText(getActivity(),"Pelicula Guardada en Favoritos!!",Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    @Override
+    public String getImagePath(ArrayList<String> imagePath) {
+        poster_path = imagePath.get(0);
+        final_backdrop_path = imagePath.get(1);
+        movie_favorite.setId(movie_id);
+        movie_favorite.setTitle(getActivity().getIntent().getStringExtra("title"));
+        movie_favorite.setRelease_date(getActivity().getIntent().getStringExtra("date"));
+        movie_favorite.setVote_average(movie_vote);
+        movie_favorite.setPoster_path(poster_path);
+        movie_favorite.setBackdrop_path(final_backdrop_path);
+        movie_favorite.setOverview(getActivity().getIntent().getStringExtra("overview"));
+        helper.insertMovieData(movie_favorite);
+
+        Toast.makeText(getActivity(),"Pelicula Guardada en Favoritos!!",Toast.LENGTH_LONG).show();
+        return null;
     }
 }

@@ -22,14 +22,14 @@ public class FavoriteMoviesDatabase extends SQLiteOpenHelper {
     private static final String ID = "id";
     private static final String ID_MOVIE = "idmovie";
     private static final String COLUMN_OVERVIEW = "overview";
-    //private static final String COLUMN_POSTER = "poster";
+    private static final String COLUMN_POSTER = "poster";
     private static final String COLUMN_VOTE = "vote";
     private static final String COLUMN_DATE = "date";
-    //private static final String COLUMN_MAIN_POSTER = "posterMain";
+    private static final String COLUMN_MAIN_POSTER = "posterMain";
     SQLiteDatabase db;
 
     private static final String TABLE_CREATE_DETAILS = "create table details (id integer primary key not null , " +
-            "idmovie text not null , title text not null , overview text not null , vote text key not null , date text not null);";
+            "idmovie text not null , title text not null , overview text not null , poster text not null , vote text key not null , date text not null , posterMain text not null);";
 
     public FavoriteMoviesDatabase(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -43,8 +43,8 @@ public class FavoriteMoviesDatabase extends SQLiteOpenHelper {
 
     public void insertMovieData(PersistentMovieData mData) {
         db = this.getWritableDatabase();
-        //String posterPath = new String(mData.getPoster_path());
-        //String backdropPath = new String(mData.getBackdrop_path());
+        String posterPath = new String(mData.getPoster_path());
+        String backdropPath = new String(mData.getBackdrop_path());
         String voteCount = Double.toString(mData.getVote_average());
         ContentValues values = new ContentValues();
         String query = " select * from details ";
@@ -56,10 +56,10 @@ public class FavoriteMoviesDatabase extends SQLiteOpenHelper {
         values.put(ID_MOVIE,mData.getId());
         values.put(COLUMN_TITLE, mData.getTitle());
         values.put(COLUMN_OVERVIEW, mData.getOverview());
-        //values.put(COLUMN_POSTER, backdropPath);
+        values.put(COLUMN_POSTER, backdropPath);
         values.put(COLUMN_VOTE, voteCount);
         values.put(COLUMN_DATE, mData.getRelease_date());
-        //values.put(COLUMN_MAIN_POSTER, posterPath);
+        values.put(COLUMN_MAIN_POSTER, posterPath);
 
         db.insert(TABLE_NAME_DETAILS, null , values);
         cursor.close();
@@ -79,10 +79,10 @@ public class FavoriteMoviesDatabase extends SQLiteOpenHelper {
                     movie.setId(cursor.getInt(0));
                     movie.setTitle(cursor.getString(3));
                     movie.setOverview(cursor.getString(4));
-                    //movie.setBackdrop_path(cursor.getString(0));
+                    movie.setBackdrop_path(cursor.getString(0));
                     movie.setVote_average(cursor.getDouble(1));
                     movie.setRelease_date(cursor.getString(2));
-                    //movie.setPoster_path(cursor.getString(5));
+                    movie.setPoster_path(cursor.getString(5));
                 }
             } while (cursor.moveToNext());
             cursor.close();
@@ -100,13 +100,13 @@ public class FavoriteMoviesDatabase extends SQLiteOpenHelper {
         if( cursor != null && cursor.moveToFirst() ) {
             do{
                 PersistentMovieData movieObject = new PersistentMovieData();
-                movieObject.setId(cursor.getInt(0));
-                movieObject.setTitle(cursor.getString(1));
-                movieObject.setOverview(cursor.getString(2));
-                //movieObject.setBackdrop_path(cursor.getString(3).getBytes());
-                movieObject.setVote_average(cursor.getDouble(3));
-                movieObject.setRelease_date(cursor.getString(4));
-                //movieObject.setPoster_path(cursor.getString(6).getBytes());
+                movieObject.setId(cursor.getInt(1));
+                movieObject.setTitle(cursor.getString(2));
+                movieObject.setOverview(cursor.getString(3));
+                movieObject.setBackdrop_path(cursor.getString(4));
+                movieObject.setVote_average(cursor.getDouble(5));
+                movieObject.setRelease_date(cursor.getString(6));
+                movieObject.setPoster_path(cursor.getString(7));
                 movies.add(movieObject);
             }  while (cursor.moveToNext());
             cursor.close();

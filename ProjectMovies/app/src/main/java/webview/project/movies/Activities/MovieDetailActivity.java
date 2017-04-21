@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -48,9 +49,13 @@ public class MovieDetailActivity extends YouTubeBaseActivity{
         playerFragment = (YouTubePlayerFragment) fm.findFragmentByTag(player_tag);
         MovieDetailsFragment movieDetailsFragment = (MovieDetailsFragment) fm.findFragmentByTag(movie_tag);
         ft = fm.beginTransaction();
-        if (playerFragment == null) {
-            playerFragment = new YouTubePlayerFragment();
-            ft.add(R.id.content_youtube, playerFragment, player_tag);
+        if(AppConstants.isNetworkConnected(this)) {
+            if (playerFragment == null) {
+                playerFragment = new YouTubePlayerFragment();
+                ft.add(R.id.content_youtube, playerFragment, player_tag);
+            }
+        }else {
+            Toast.makeText(this, "Video Player only avaliable with internet Connection", Toast.LENGTH_SHORT).show();
         }
         if (movieDetailsFragment == null) {
             movieDetailsFragment = new MovieDetailsFragment();

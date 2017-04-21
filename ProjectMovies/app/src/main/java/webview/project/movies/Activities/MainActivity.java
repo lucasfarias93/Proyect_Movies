@@ -116,6 +116,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.popular_movies:
                 if(AppConstants.isNetworkConnected(this)){
                     error_layout.setVisibility(View.GONE);
+                    if(recyclerViewFavs != null){
+                        recyclerViewFavs.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
                     moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.POPULAR_MOVIES);
                     this.progressDialog = new ProgressDialog(this,R.style.AlertDialogCustom);
                     progressDialog.setTitle(AppConstants.PROCESS_REQUEST);
@@ -125,6 +129,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
                 } else {
                     recyclerView.setVisibility(View.GONE);
+                    recyclerViewFavs.setVisibility(View.GONE);
                     error_layout.setVisibility(View.VISIBLE);
                     crearDialogoConexion("Internet problems", "Please check your internet connection.");
                 }
@@ -132,6 +137,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             case R.id.top_rated_movies:
                 if(AppConstants.isNetworkConnected(this)){
+                    error_layout.setVisibility(View.GONE);
+                    if(recyclerViewFavs != null){
+                        recyclerViewFavs.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
                     moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.TOP_RATED_MOVIES);
                     this.progressDialog = new ProgressDialog(this,R.style.AlertDialogCustom);
                     progressDialog.setTitle(AppConstants.PROCESS_REQUEST);
@@ -141,14 +151,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
                 } else {
                     recyclerView.setVisibility(View.GONE);
+                    recyclerViewFavs.setVisibility(View.GONE);
                     error_layout.setVisibility(View.VISIBLE);
                     crearDialogoConexion("Internet problems", "Please check your internet connection.");
                 }
                 break;
 
             case R.id.favorite_movies:
-                error_layout.setVisibility(View.GONE);
-                loadFavoriteMovies();
+                if(!AppConstants.isNetworkConnected(this)) {
+                    error_layout.setVisibility(View.GONE);
+                    loadFavoriteMovies();
+                }else {
+                    crearDialogoConexion("FEATURE ERROR", "Feature avaliable only without internet connection");
+                }
                 break;
 
             case R.id.settings:
@@ -200,11 +215,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void loadFavoriteMovies(){
         posters = helper.getFavoriteMovies();
         if(!posters.isEmpty()){
+            error_layout.setVisibility(View.GONE);
             recyclerView.setVisibility(View.GONE);
             recyclerViewFavs.setVisibility(View.VISIBLE);
             favoriteMoviesAdapter = new FavoriteMoviesAdapter(MainActivity.this, posters);
             recyclerViewFavs.setAdapter(favoriteMoviesAdapter);
         }else {
+            error_layout.setVisibility(View.VISIBLE);
             crearDialogoConexion("No Favorite movies were found", "Check your internet connection in order to add movies to Favorite List");
         }
     }

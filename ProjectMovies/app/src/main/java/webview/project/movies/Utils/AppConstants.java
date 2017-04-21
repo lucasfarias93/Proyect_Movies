@@ -22,7 +22,6 @@ public class AppConstants {
     public static final String BASE_BACKDROP_URL = "https://image.tmdb.org/t/p/w780";
     public static final String YOUTUBE_KEY = "AIzaSyDE18opuRo8CvyJqQf0AfiMBT_xwvTxaSE";
 
-
     public static boolean isNetworkConnected(Context context) {
 
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
