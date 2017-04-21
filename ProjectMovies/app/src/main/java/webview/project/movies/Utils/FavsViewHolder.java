@@ -53,7 +53,7 @@ public class FavsViewHolder extends RecyclerView.ViewHolder implements View.OnCl
 
     }
     public void getMovieDetailItems(PersistentMovieData movie) {
-        original_title = movie.getOriginal_title();
+        original_title = movie.getTitle();
         overview = movie.getOverview();
         release_date = movie.getRelease_date();
         vote_average = movie.getVote_average();

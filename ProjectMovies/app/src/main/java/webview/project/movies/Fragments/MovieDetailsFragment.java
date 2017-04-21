@@ -137,7 +137,7 @@ public class MovieDetailsFragment extends Fragment implements FavoriteImagesAsyn
             }
             fab = (FloatingActionButton) v.findViewById(R.id.float_button);
             fab.setVisibility(View.GONE);
-            reviews.setVisibility(View.GONE);
+            reviews.setVisibility(View.INVISIBLE);
         }
     }
 
