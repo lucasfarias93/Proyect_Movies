@@ -19,6 +19,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 import webview.project.movies.Utils.AppConstants;
 
@@ -46,28 +47,26 @@ public class DBaseBitmapUtility {
 
                     @Override
                     public void run() {
-                        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                        String imageFileName = imageName + "_" + timeStamp;
-                        File storageDir = new File(Environment.getExternalStorageDirectory().toString(), imageDir);
+                        String root = Environment.getExternalStorageDirectory().toString();
+                        File myDir = new File(root + "/saved_images");
+                        myDir.mkdirs();
 
-                        OutputStream fOutputStream = null;
+                        String fname = imageName;
+                        File file = new File (myDir, fname);
+
                         try {
-                            if(!storageDir.exists()){
-                                storageDir.mkdirs();
-
-                            File image = File.createTempFile(
-                                    imageFileName,  // prefix
-                                    ".jpg",         // suffix
-                                    storageDir      // directory
-                            );
+                            if (!file.exists ()){
+                                file.createNewFile();
                             }
-                            fOutputStream = new FileOutputStream(storageDir);
-                            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fOutputStream);
-                            fOutputStream.flush();
-                            fOutputStream.close();
-                        } catch (IOException e) {
-                            Log.e("IOException", e.getLocalizedMessage());
+                            FileOutputStream out = new FileOutputStream(file);
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out);
+                            out.flush();
+                            out.close();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
+
                     }
                 }).start();
             }
@@ -83,17 +82,27 @@ public class DBaseBitmapUtility {
         };
         return target;
     }
-    /*String path = (Environment.getExternalStoragePublicDirectory(
-            Environment.DIRECTORY_PICTURES) + File.separator + imageDir);
-    //creating directory
-    File file = new File(path);
+    /*String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+    String imageFileName = imageName + "_" + timeStamp;
+    File storageDir = new File(Environment.getExternalStorageDirectory().toString(), imageDir);
+
+    OutputStream fOutputStream = null;
     try {
-        file.mkdirs();
-        //creating file
-        file = new File(path, imageName + ".jpeg");
-        FileOutputStream ostream = new FileOutputStream(file);
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, ostream);
-        ostream.flush();
-        ostream.close();*/
+        if(!storageDir.exists()){
+            storageDir.mkdirs();
+
+            File image = File.createTempFile(
+                    imageFileName,  // prefix
+                    ".jpg",         // suffix
+                    storageDir      // directory
+            );
+        }
+        fOutputStream = new FileOutputStream(storageDir);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, fOutputStream);
+        fOutputStream.flush();
+        fOutputStream.close();
+    } catch (IOException e) {
+        Log.e("IOException", e.getLocalizedMessage());
+    }*/
 }
 
