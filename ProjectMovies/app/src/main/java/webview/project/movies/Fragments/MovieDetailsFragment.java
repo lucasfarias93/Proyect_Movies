@@ -94,8 +94,6 @@ public class MovieDetailsFragment extends Fragment implements FavoriteImagesAsyn
         date.setTypeface(customFont3);
         vote.setTypeface(customFont3);
 
-        overview.setTypeface(customFont2);
-
         movie_id = b.getInt("id");
 
         movie_vote = b.getDouble("vote");
@@ -138,21 +136,8 @@ public class MovieDetailsFragment extends Fragment implements FavoriteImagesAsyn
                 backdrop.setImageBitmap(myBitmap);
             }
             fab = (FloatingActionButton) v.findViewById(R.id.float_button);
-            fab.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(context, "Option enable only with internet connection", Toast.LENGTH_LONG).show();
-                }
-            });
-
-            reviews.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(getActivity(), ReviewsActivity.class);
-                    i.putExtra("movie_id", movie_id);
-                    startActivity(i);
-                }
-            });
+            fab.setVisibility(View.GONE);
+            reviews.setVisibility(View.GONE);
         }
     }
 
