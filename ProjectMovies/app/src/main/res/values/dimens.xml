@@ -9,4 +9,10 @@
     <dimen name="Size50dp">50dp</dimen>
     <dimen name="Size240dp">240dp</dimen>
     <dimen name="Size120dp">120dp</dimen>
+    <dimen name="Size15sp">15sp</dimen>
+    <dimen name="size20sp">20sp</dimen>
+    <dimen name="size10dp">10dp</dimen>
+    <dimen name="minpadding">2dp</dimen>
+    <dimen name="imageHeight">300dp</dimen>
+    <dimen name="size8dp">8dp</dimen>
 </resources>

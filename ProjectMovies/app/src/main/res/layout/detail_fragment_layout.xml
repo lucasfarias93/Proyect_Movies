@@ -8,7 +8,7 @@
     <ImageView
         android:id="@+id/backdrop_view"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="@dimen/imageHeight"
         android:layout_gravity="center"
         android:scaleType="fitXY"/>
 
@@ -16,31 +16,36 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="2dp">
+        android:padding="@dimen/minpadding">
 
         <TextView
             android:id="@+id/title_movie"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/size10dp"
             android:textColor="@color/colorWhite"
-            android:textSize="25dp" />
+            android:textSize="@dimen/size20sp"
+            android:textAlignment="center"
+            android:textStyle="normal|bold"
+            android:lineSpacingExtra="@dimen/size8dp" />
 
         <TextView
             android:id="@+id/date"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center_vertical"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/colorWhite"
+            android:textAlignment="center" />
 
 
         <TextView
             android:id="@+id/vote"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center_vertical"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@color/colorWhite"
+            android:textAlignment="center" />
 
     </LinearLayout>
 
@@ -49,13 +54,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp"
-        android:textColor="@color/colorWhite" />
+        android:textColor="@color/colorWhite"
+        android:textAlignment="viewStart"
+        android:textStyle="normal|bold" />
 
     <TextView
         android:id="@+id/link_reviews"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="15dp"
+        android:textSize="@dimen/Size15sp"
         android:text="@string/link_reviews"
         android:clickable="true"
         android:gravity="center_horizontal|center_vertical"

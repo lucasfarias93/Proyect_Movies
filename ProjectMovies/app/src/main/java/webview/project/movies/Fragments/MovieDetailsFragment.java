@@ -3,6 +3,7 @@ package webview.project.movies.Fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -88,7 +89,6 @@ public class MovieDetailsFragment extends Fragment {
 
     public MovieData getMovieData(int MovieID) {
         movieData = helper.getMovieData(MovieID);
-        //TODO Hacer que guarde los datos con el metodo getMovieData
         return movieData;
     }
 
@@ -99,6 +99,12 @@ public class MovieDetailsFragment extends Fragment {
         vote = (TextView) v.findViewById(R.id.vote);
         date = (TextView) v.findViewById(R.id.date);
         reviews = (TextView) v.findViewById(R.id.link_reviews);
+
+        Typeface customFont2 = Typeface.createFromAsset(getActivity().getAssets(),"fonts/AngularRounded.ttf");
+        Typeface customFont3 = Typeface.createFromAsset(getActivity().getAssets(),"fonts/Heroes.ttf");
+
+        title.setTypeface(customFont3);
+        date.setTypeface(customFont2);
 
         movie_id = b.getInt("id");
 
