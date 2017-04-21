@@ -2,14 +2,19 @@ package webview.project.movies.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.squareup.picasso.Picasso;
 import java.util.List;
+
+import webview.project.movies.Database.DBaseBitmapUtility;
 import webview.project.movies.Entities.MovieData;
+import webview.project.movies.Entities.PersistentMovieData;
 import webview.project.movies.R;
+import webview.project.movies.Utils.AppConstants;
 import webview.project.movies.Utils.FavsViewHolder;
 
 /**
@@ -18,10 +23,10 @@ import webview.project.movies.Utils.FavsViewHolder;
 
 public class FavoriteMoviesAdapter extends RecyclerView.Adapter <FavsViewHolder>{
 
-    final List<MovieData> posters;
+    public List<PersistentMovieData> posters;
     public Context context;
 
-    public FavoriteMoviesAdapter(Context context ,List <MovieData> items) {
+    public FavoriteMoviesAdapter(Context context ,List <PersistentMovieData> items) {
         this.context = context;
         this.posters = items;
     }
@@ -40,11 +45,10 @@ public class FavoriteMoviesAdapter extends RecyclerView.Adapter <FavsViewHolder>
 
     @Override
     public void onBindViewHolder(FavsViewHolder holder, int position) {
-
-        MovieData movie = posters.get(position);
-        Picasso.with(context)
-                .load(movie.getPoster_path())
-                .into(holder.moviePoster);
+        PersistentMovieData movie = posters.get(position);
+        Bitmap posterImage = null;
+        posterImage = DBaseBitmapUtility.getImage(movie.getPoster_path());
+        holder.moviePoster.setImageBitmap(posterImage);
 
         holder.setOnClickListeners(movie);
     }

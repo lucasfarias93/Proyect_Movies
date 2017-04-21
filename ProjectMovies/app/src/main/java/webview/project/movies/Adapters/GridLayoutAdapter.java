@@ -58,8 +58,6 @@ public class GridLayoutAdapter extends RecyclerView.Adapter<GridLayoutViewHolder
                     .load(AppConstants.BASE_POSTER_GRID_URL + movie.getPoster_path())
                     .into(holder.moviePoster);
 
-
-
         holder.setOnClickListeners(movie);
 
     }

@@ -2,12 +2,8 @@ package webview.project.movies.Activities;
 
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.ActivityInfo;
-import android.graphics.Movie;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import android.support.design.widget.NavigationView;
@@ -22,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.List;
@@ -31,6 +28,7 @@ import webview.project.movies.Adapters.GridLayoutAdapter;
 import webview.project.movies.Clients.MoviesDataAsynkConnection;
 import webview.project.movies.Database.FavoriteMoviesDatabase;
 import webview.project.movies.Entities.MovieData;
+import webview.project.movies.Entities.PersistentMovieData;
 import webview.project.movies.R;
 import webview.project.movies.Utils.AppConstants;
 
@@ -45,21 +43,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private GridLayoutManager gridLayoutManager2;
     private List<MovieData> myMovieData;
     private FavoriteMoviesAdapter favoriteMoviesAdapter;
-    private List<MovieData> posters;
+    private List<PersistentMovieData> posters;
     private Toolbar toolbar;
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
-    private FavoriteMoviesDatabase helper;
+    private FavoriteMoviesDatabase helper = new FavoriteMoviesDatabase(this);
+    LinearLayout error_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        error_layout = (LinearLayout) findViewById(R.id.error_background_layout);
 
+        initView();
 
-        if(isNetworkConnected(this)){
+        if(AppConstants.isNetworkConnected(this)){
+            error_layout.setVisibility(View.GONE);
             MoviesDataAsynkConnection moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.NOW_PLAYING_MOVIES);
             this.progressDialog = new ProgressDialog(this,R.style.AlertDialogCustom);
             progressDialog.setTitle(AppConstants.PROCESS_REQUEST);
@@ -69,12 +71,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
 
         } else {
-            crearDialogoConexion("Internet problems", "Please check your internet connection. Favorite movie list will be loaded..");
-            recyclerView.setVisibility(View.GONE);
+            error_layout.setVisibility(View.VISIBLE);
             loadFavoriteMovies();
         }
-
-        initView();
     }
 
     @Override
@@ -114,7 +113,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch(id){
             case R.id.popular_movies:
-                if(isNetworkConnected(this)){
+                if(AppConstants.isNetworkConnected(this)){
+                    error_layout.setVisibility(View.GONE);
                     moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.POPULAR_MOVIES);
                     this.progressDialog = new ProgressDialog(this,R.style.AlertDialogCustom);
                     progressDialog.setTitle(AppConstants.PROCESS_REQUEST);
@@ -123,13 +123,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     progressDialog.show();
                     moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
                 } else {
+                    recyclerView.setVisibility(View.GONE);
+                    error_layout.setVisibility(View.VISIBLE);
                     crearDialogoConexion("Internet problems", "Please check your internet connection.");
-                    loadFavoriteMovies();
                 }
                 break;
 
             case R.id.top_rated_movies:
-                if(isNetworkConnected(this)){
+                if(AppConstants.isNetworkConnected(this)){
                     moviesDataAsynkConnection = new MoviesDataAsynkConnection(this, this, AppConstants.TOP_RATED_MOVIES);
                     this.progressDialog = new ProgressDialog(this,R.style.AlertDialogCustom);
                     progressDialog.setTitle(AppConstants.PROCESS_REQUEST);
@@ -138,13 +139,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     progressDialog.show();
                     moviesDataAsynkConnection.execute(AppConstants.API_KEY, AppConstants.LANGUAJE_ES, page_num);
                 } else {
+                    recyclerView.setVisibility(View.GONE);
+                    error_layout.setVisibility(View.VISIBLE);
                     crearDialogoConexion("Internet problems", "Please check your internet connection.");
-                    loadFavoriteMovies();
                 }
                 break;
 
             case R.id.favorite_movies:
-                recyclerView.setVisibility(View.GONE);
+                error_layout.setVisibility(View.GONE);
                 loadFavoriteMovies();
                 break;
 
@@ -193,22 +195,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
     }
-    private boolean isNetworkConnected(Context context) {
-
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo info = connectivityManager.getActiveNetworkInfo();
-        if (info == null || !info.isConnected() || !info.isAvailable()) {
-            return false;
-        }
-        return true;
-    }
 
     public void loadFavoriteMovies(){
-        posters = helper.getFavoriteMoviePoster();
-        favoriteMoviesAdapter = new FavoriteMoviesAdapter(MainActivity.this, posters);
-        recyclerView.setAdapter(favoriteMoviesAdapter);
-        if(this.progressDialog != null){
-            this.progressDialog.dismiss();
+        posters = helper.getFavoriteMovies();
+        if(!posters.isEmpty()){
+            favoriteMoviesAdapter = new FavoriteMoviesAdapter(MainActivity.this, posters);
+            recyclerViewFavs.setAdapter(favoriteMoviesAdapter);
+        }else {
+            crearDialogoConexion("No Favorite movies were found", "Check your internet connection in order to add movies to Favorite List");
         }
     }
 
@@ -224,7 +218,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         };
         alertDialogBuilder.setPositiveButton("OK", listenerOk);
-
         return alertDialogBuilder.show();
     }
 }

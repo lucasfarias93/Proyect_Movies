@@ -30,8 +30,8 @@ public class ListLayoutAdapter extends RecyclerView.Adapter<ListLayoutAdapter.Li
         private Context context;
         private TextView author;
         private TextView content;
-        private TextView url;
-        private TextView reviewer_id;
+        private TextView author_header;
+        private TextView comments_header;
         LinearLayout layoutItemList;
 
         public ListLayoutViewHolder(View v, Context context) {
@@ -39,8 +39,8 @@ public class ListLayoutAdapter extends RecyclerView.Adapter<ListLayoutAdapter.Li
             this.context = context;
             author = (TextView) v.findViewById(R.id.author);
             content = (TextView) v.findViewById(R.id.content);
-            url = (TextView) v.findViewById(R.id.url);
-            reviewer_id = (TextView) v.findViewById(R.id.id);
+            author_header = (TextView) v.findViewById(R.id.author_header);
+            comments_header = (TextView) v.findViewById(R.id.comments_header);
             layoutItemList = (LinearLayout) v.findViewById(R.id.linear_layout_list);
         }
     }
@@ -65,9 +65,7 @@ public class ListLayoutAdapter extends RecyclerView.Adapter<ListLayoutAdapter.Li
     @Override
     public void onBindViewHolder(ListLayoutAdapter.ListLayoutViewHolder holder, int position) {
         ReviewDetails reviews = reviewDetailsList.get(position);
-        holder.reviewer_id.setText("REVIEWER ID: " + reviews.getId());
-        holder.author.setText("AUTHOR: " + reviews.getAuthor());
-        holder.content.setText("COMMENTS: " + reviews.getContent());
-        holder.url.setText("URL: " + reviews.getUrl());
+        holder.author.setText(reviews.getAuthor());
+        holder.content.setText(reviews.getContent());
     }
 }
