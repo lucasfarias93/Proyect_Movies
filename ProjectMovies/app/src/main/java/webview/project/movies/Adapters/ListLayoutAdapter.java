@@ -1,6 +1,7 @@
 package webview.project.movies.Adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,12 @@ public class ListLayoutAdapter extends RecyclerView.Adapter<ListLayoutAdapter.Li
             author_header = (TextView) v.findViewById(R.id.author_header);
             comments_header = (TextView) v.findViewById(R.id.comments_header);
             layoutItemList = (LinearLayout) v.findViewById(R.id.linear_layout_list);
+            Typeface customFont = Typeface.createFromAsset(context.getAssets(),"fonts/Supersonic.ttf");
+            Typeface customFont2 = Typeface.createFromAsset(context.getAssets(),"fonts/GiantRobotArmy-Medium.ttf");
+            content.setTypeface(customFont2);
+            author.setTypeface(customFont);
+            author_header.setTypeface(customFont2);
+            comments_header.setTypeface(customFont2);
         }
     }
 
