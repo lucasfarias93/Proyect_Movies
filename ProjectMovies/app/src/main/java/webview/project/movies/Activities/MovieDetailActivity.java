@@ -34,7 +34,7 @@ public class MovieDetailActivity extends YouTubeBaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
 
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+       // setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         Bundle b = getIntent().getExtras();
         movie_id = b.getInt("id");

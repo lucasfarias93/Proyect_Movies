@@ -3,7 +3,6 @@ package webview.project.movies.Activities;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import android.support.design.widget.NavigationView;
@@ -32,6 +31,8 @@ import webview.project.movies.Entities.PersistentMovieData;
 import webview.project.movies.R;
 import webview.project.movies.Utils.AppConstants;
 
+
+
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MoviesDataAsynkConnection.Callback {
 
     private ProgressDialog progressDialog = null;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+      //  setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         error_layout = (LinearLayout) findViewById(R.id.error_background_layout);
 
         initView();
@@ -222,4 +223,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         alertDialogBuilder.setPositiveButton("OK", listenerOk);
         return alertDialogBuilder.show();
     }
+
 }
